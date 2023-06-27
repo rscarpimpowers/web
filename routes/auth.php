@@ -8,6 +8,8 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\UserPermissionsController;
+use App\Http\Controllers\Auth\UsersController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
@@ -56,4 +58,11 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
+
+    Route::get('users-show',    [UsersController::class,           'show'])->name('users.show');
+
+    // Permissions
+    Route::post('permissions',  [UserPermissionsController::class,  'show'])->name('permissions.show');
+
+
 });

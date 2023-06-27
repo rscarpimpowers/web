@@ -1,33 +1,36 @@
-import { useState }                 from 'react';
-import { Sidebar }                  from 'flowbite-react';
+import {Sidebar}                    from 'flowbite-react';
+import {Link}                       from "@inertiajs/react";
 
 
-
-import { HiArrowSmRight, HiChartPie, HiInbox, HiShoppingBag, HiTable, HiUser, HiViewBoards }
-                                    from 'react-icons/hi';
+import {HiArrowSmRight, HiInbox, HiShoppingBag, HiTable, HiUser, HiUserGroup} from 'react-icons/hi';
 
 
+export default function Authenticated({ user, children }) {
 
+    // Destructuring.
+    const {level_id} = user;
 
-const handleLayout = () => {
+    const handleLeftSidebar = () => {
 
-    /* Show the Layout based on the User Level_id */
-    switch (user.level_id){
+        /* Showing based on the User Level */
+        switch (level_id){
 
-        /* Super Admin */
-        case 1:
-            return "";
+            /* Super Admin */
+            case 1:
+
+                return console.log('super admin')
+        }
     }
-}
 
 
 
 
-
-export default function Authenticated({ user, header, children }) {
-    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     return (
+
+
+
+
         <div className="antialiased bg-gray-50 dark:bg-gray-900">
             <nav
                 className="bg-white border-b border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50">
@@ -796,27 +799,42 @@ export default function Authenticated({ user, header, children }) {
                         </div>
                     </form>
 
+                    { handleLeftSidebar() }
+
                     {/*  SideBar */}
                     <Sidebar aria-label="Sidebar with multi-level dropdown example">
                         <Sidebar.Items>
                             <Sidebar.ItemGroup>
-                                <Sidebar.Item
-                                    href="#"
-                                    icon={HiChartPie}
+
+                                <Link
+                                    href={route('dashboard')}
+                                    className="flex justify-left rounded-lg p-2 text-base font-normal text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 group w-full transition duration-75"
                                 >
-                                    <p>
-                                        Dashboard
-                                    </p>
-                                </Sidebar.Item>
+                                    <svg
+                                        aria-hidden="true"
+                                        className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"></path>
+                                    </svg>
+                                    <span className="ml-3">Dashboard</span>
+                                </Link>
+
+
                                 <Sidebar.Collapse
-                                    icon={HiShoppingBag}
-                                    label="E-commerce"
+                                    icon={HiUserGroup}
+                                    label="Users"
                                 >
+                                        <Link
+                                            href={route('users.show')}
+                                            className="flex items-center justify-center rounded-lg p-2 text-base font-normal text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 group w-full pl-8 transition duration-75"
+                                        >
+                                            All users
+                                        </Link>
+
                                     <Sidebar.Item href="#">
-                                        Products
-                                    </Sidebar.Item>
-                                    <Sidebar.Item href="#">
-                                        Sales
+                                        Add a New User
                                     </Sidebar.Item>
                                     <Sidebar.Item href="#">
                                         Refunds
@@ -1342,7 +1360,7 @@ export default function Authenticated({ user, header, children }) {
                 </div>
             </aside>
 
-            <main className="bg-gray-50 dark:bg-gray-900 p-4 md:ml-64 lg:mr-16 min-h-full pt-20">
+            <main className="bg-white dark:bg-gray-900 md:ml-64 lg:mr-16 min-h-full pt-8">
                 {children}
             </main>
 
