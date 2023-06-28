@@ -12,8 +12,8 @@ import CustomTable                 from "@/Components/CustomTable.jsx";
 
 
 
-export default function Show({auth, userData, company, language }){
-console.log(auth.user.id)
+export default function Show({auth, userData, permissions }){
+
     /* Get all the Permissions per Page. */
     useEffect(() => {
 
@@ -59,14 +59,16 @@ console.log(auth.user.id)
                     </section>
 
                     <CustomTable
-                        auth={auth}
+                        auth={ auth }
                         data={ userData.data }
+                        permissions={ permissions }
                         axiosconfig={{
                             axios:{
                                 url: '/permissions',
                                 data: {
                                     user_id: auth.user.id,
-                                    user_level: auth.user.level_id,
+                                    level_id: auth.user.level_id,
+                                    device: '1',
                                     screen: 'USERS_SHOW'
                                 },
                             }

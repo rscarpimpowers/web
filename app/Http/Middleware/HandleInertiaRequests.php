@@ -32,10 +32,24 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $permissions = "";
+
+        /* If There's an Auth User. */
+        if(Auth::user()){
+
+            /* Get all the Permissions for the User. */
+            $permissions = UserPermissions::where('user_id', '=', Auth::user()->id)
+                ->where('per_device', 1)
+                ->get();
+        }
+
 
         return array_merge(parent::share($request), [
             'auth' => [
                 'user' => $request->user()
+            ],
+            'permissions' => [
+                'permissions' => $permissions
             ],
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [

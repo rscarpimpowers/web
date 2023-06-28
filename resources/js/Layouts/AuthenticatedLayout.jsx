@@ -18,7 +18,7 @@ export default function Authenticated({ user, children }) {
             /* Super Admin */
             case 1:
 
-                return console.log('super admin')
+                return ''
         }
     }
 

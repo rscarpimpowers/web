@@ -2,27 +2,32 @@ import {Badge, Table}               from "flowbite-react";
 import {HiBan, HiCheck}             from "react-icons/hi";
 import axios                        from "axios";
 
-
 export default function CustomTable({...props}){
+    console.log('permission', props.permissions)
+
+    console.log('this', props.permissions.permissions.find(function (toReturn){
+
+        return toReturn === props.axiosconfig.axios.data.screen
+    }))
 
     const fetchPermissions = () => {
 
         let formData = new FormData();
 
+        /* Populating the formData  */
         Object.keys(props.axiosconfig.axios.data).map((key, i) => {
 
-            console.log(key, props.axiosconfig.axios.data[key])
+            formData.append(key, props.axiosconfig.axios.data[key])
         })
 
-
-        // Destructuring the Data.
-        // const { data } =  await axios.post(props.axiosconfig.axios.url, {
-        //     user: props.auth.user.id,
-        //     user_level: props.auth.user.level_id,
-        //     screen: props.screen
-        // })
-        //
-        // console.log(data)
+        /* Calling the Api */
+        axios({
+            method: "post",
+            url: props.axiosconfig.axios.url,
+            data: formData
+        }).then(function (response){
+            console.log(response.data)
+        })
     }
 
     return(
