@@ -1,13 +1,18 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\CompaniesController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
+use App\Http\Controllers\Auth\DevicesController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
+use App\Http\Controllers\Auth\LanguagesController;
+use App\Http\Controllers\Auth\ModulesController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\UserLevelsController;
 use App\Http\Controllers\Auth\UserPermissionsController;
 use App\Http\Controllers\Auth\UsersController;
 use App\Http\Controllers\Auth\VerifyEmailController;
@@ -59,10 +64,39 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
 
-    Route::get('users-show',    [UsersController::class,           'show'])->name('users.show');
+    // Users
+    Route::get('users-show',                [UsersController::class,            'show'])->name('users.show');
+
+    Route::get('user-create',               [UsersController::class,            'create'])->name('user.create');
+
+    Route::get('user-update/{uuid}',        [UsersController::class,            'update'])->name('user.update');
+
+    Route::post('user-verify',              [UsersController::class,            'verifyEmail'])->name('user.verify');
+
+    // Modules
+    Route::get('modules-show',              [ModulesController::class,          'show'])->name('modules.show');
+
+    Route::get('module-create',             [ModulesController::class,          'create'])->name('module.create');
+
+
+
+    // Company
+    Route::post('company',                   [CompaniesController::class,        'getData']);
+    Route::post('companies',                [CompaniesController::class,         'getAllWithView']);
+
+
 
     // Permissions
-    Route::post('permissions',  [UserPermissionsController::class,  'show'])->name('permissions.show');
+    Route::post('permissions',              [UserPermissionsController::class,  'show'])->name('permissions.show');
 
+
+    // Languages
+    Route::post('languages',                 [LanguagesController::class,       'showAll']);
+
+    // Levels
+    Route::post('levels',                    [UserLevelsController::class,       'showAll']);
+
+    // Devices
+    Route::post('devices',                   [DevicesController::class,         'showAll']);
 
 });

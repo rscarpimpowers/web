@@ -20,8 +20,11 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "@inertiajs/inertia": "^0.11.1",
         "flowbite": "^1.6.6",
         "flowbite-react": "^0.4.9",
-        "react-icons": "^4.10.1"
+        "lodash": "^4.17.21",
+        "react-icons": "^4.10.1",
+        "sweetalert2": "^11.7.12"
     }
 }

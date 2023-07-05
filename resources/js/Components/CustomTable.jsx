@@ -1,40 +1,69 @@
-import {Badge, Table}               from "flowbite-react";
-import {HiBan, HiCheck}             from "react-icons/hi";
-import axios                        from "axios";
+
+import {Link}                           from "@inertiajs/react";
+import {Badge, Button, Table}           from "flowbite-react";
+import Swal                             from "sweetalert2";
+
+import {HiBan, HiCheck, HiOutlineTrash} from "react-icons/hi";
+import {HiOutlinePencilSquare}          from "react-icons/hi2";
+
+
+
+
+const handleDelete = (e) => {
+
+    e.preventDefault();
+
+    Swal.fire({
+        title: 'Are you sure?',
+        html: vText,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: vConfirmBtn
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            /* Call Api Route to Delete the Data. */
+
+
+            Swal.fire(
+                'Deleted!',
+                'Deleted Successfully',
+                'success'
+            )
+        }
+    })
+}
+
 
 export default function CustomTable({...props}){
-    console.log('permission', props.permissions)
 
-    console.log('this', props.permissions.permissions.find(function (toReturn){
 
-        return toReturn === props.axiosconfig.axios.data.screen
-    }))
-
-    const fetchPermissions = () => {
-
-        let formData = new FormData();
-
-        /* Populating the formData  */
-        Object.keys(props.axiosconfig.axios.data).map((key, i) => {
-
-            formData.append(key, props.axiosconfig.axios.data[key])
-        })
-
-        /* Calling the Api */
-        axios({
-            method: "post",
-            url: props.axiosconfig.axios.url,
-            data: formData
-        }).then(function (response){
-            console.log(response.data)
-        })
-    }
+    // const fetchPermissions = () => {
+    //
+    //     let formData = new FormData();
+    //
+    //     /* Populating the formData  */
+    //     Object.keys(props.axiosconfig.axios.data).map((key, i) => {
+    //
+    //         formData.append(key, props.axiosconfig.axios.data[key])
+    //     })
+    //
+    //     /* Calling the Api */
+    //     axios({
+    //         method: "post",
+    //         url: props.axiosconfig.axios.url,
+    //         data: formData
+    //     }).then(function (response){
+    //         console.log(response.data)
+    //     })
+    // }
 
     return(
 
         <Table striped {...props}>
 
-            { fetchPermissions()}
             <Table.Head>
 
                 {/* Iterates to create all the Table Headers.*/}
@@ -83,8 +112,41 @@ export default function CustomTable({...props}){
                                     </div>
                                 </Table.Cell>
 
-                        }
+                            /* Case is a Button  */
+                            case 'btn':
 
+                                /* Creating the Button according to the btn */
+                                switch (props.rowconfig[key].typeBtn){
+
+                                    /* Edit Button */
+                                    case 'edit':
+                                        return <Table.Cell key={item}
+                                            className={`w-24 ${props.rowconfig[key].class !== ""? props.rowconfig[key].class: ''}`}
+                                        >
+                                            <Link href={route(`${props.rowconfig[key].route}`, `${items['uuid']}`)}>
+                                                <Button color="warning" className="w-24 h-7">
+
+                                                    <HiOutlinePencilSquare className="mr-2 h-3.5 w-3.5" />
+                                                        Edit
+                                                </Button>
+                                            </Link>
+                                        </Table.Cell>
+
+                                    /* Delete Button */
+                                    case 'delete':
+                                        return <Table.Cell key={item}
+                                            className={`w-24 ${props.rowconfig[key].class !== ""? props.rowconfig[key].class: ''}`}
+                                        >
+                                            <Link href={route(`${props.rowconfig[key].route}`, `${items['uuid']}`)}>
+                                                <Button color="failure" className="w-24 h-7">
+
+                                                    <HiOutlineTrash className="mr-2 h-3.5 w-3.5" />
+                                                    Delete
+                                                </Button>
+                                            </Link>
+                                        </Table.Cell>
+                                }
+                        }
                     })}
 
                     </Table.Row>

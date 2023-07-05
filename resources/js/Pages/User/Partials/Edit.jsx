@@ -1,54 +1,56 @@
-import {Head, Link, useForm} from "@inertiajs/react";
-import AuthenticatedLayout              from '@/Layouts/AuthenticatedLayout.jsx';
+
+import {useState}                               from "react";
+import {Head, Link, useForm}
+                                                from "@inertiajs/react";
+import AuthenticatedLayout                      from '@/Layouts/AuthenticatedLayout.jsx';
+
+
 import {Badge, Breadcrumb, Checkbox, Label, Select, TextInput}
-                                        from "flowbite-react";
-import {HiOutlineListBullet}            from "react-icons/hi2";
-import {HiBan, HiCheck}                 from "react-icons/hi";
-import SectionPermissions               from "@/Pages/User/Partials/Sections/SectionPermissions.jsx";
-import {FIsEmpty, FSavePermissions} from "@/Helpers/Utils.js";
-import {useState} from "react";
+                                                from "flowbite-react";
+
+import {HiBan, HiCheck}
+                                                from "react-icons/hi";
+import {HiOutlineListBullet}                    from "react-icons/hi2";
+
+import {FGetSetAllComboPermissions, FIsEmpty, FSavePermissions}
+                                                from "@/Helpers/Utils.js";
+
+import SectionPermissions                       from "@/Pages/User/Partials/Sections/SectionPermissions.jsx";
 
 
 
 
 
 
+export default function Edit({auth, userData, permissions, userPermissions }){
 
-
-
-
-
-
-export default function Add({ auth }){
-
+    const [languages, setLanguages]     = useState([]);
+    const [levels, setLevels]           = useState([]);
+    const [companies, setCompanies]     = useState([]);
     const [emailDirty, setEmailDirty]       = useState({email: '', dirty: false})
-    const [languages, setLanguages] = useState([]);
-    const [levels, setLevels]       = useState([]);
-    const [companies, setCompanies] = useState([]);
+
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
-        first_name      : '',
-        last_name       : '',
-        email           : '',
-        language        : '',
-        isActive        : '',
-        level           : '',
-        company         : ''
+        first_name      : userData[0].first_name,
+        last_name       : userData[0].last_name,
+        email           : userData[0].email,
+        language        : userData[0].lan_description,
+        isActive        : userData[0].is_active,
+        level           : userData[0].lev_description,
+        company         : userData[0].com_name
     });
-
 
     useState(() => {
 
         /* Getting all the Languages. */
-        axios({ method: "post", url: "/languages" }).then(function (response){ setLanguages(response.data) })
+        axios({ method: "post", url: '/languages' }).then(function (response){ setLanguages(response.data) })
 
         /* Getting all the User Levels. */
-        axios({method: "post", url: "/levels"}).then((response) => { setLevels(response.data) });
+        axios({method: "post", url: '/levels'}).then((response) => { setLevels(response.data) });
 
         /* Getting all Companies */
-        axios({method: "post", url: "/companies"}).then((response) => { setCompanies(response.data)})
+        axios({method: "post", url: "/companies"} ).then((response) => { setCompanies(response.data) })
     }, [])
-
 
 
 
@@ -84,7 +86,6 @@ export default function Add({ auth }){
     }
 
 
-
     const submit = (e) => {
 
         e.preventDefault();
@@ -94,13 +95,14 @@ export default function Add({ auth }){
     }
 
 
+
+
     return(
+
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Profile</h2>}
         >
-            <Head title="Add User" />
-
+            <Head title="Edit User" />
 
             <div className="space-y-6">
                 <div className="p-4 sm:p-8 bg-white dark:bg-gray-800">
@@ -114,10 +116,9 @@ export default function Add({ auth }){
                             </p>
                         </Breadcrumb.Item>
                         <Breadcrumb.Item>
-                            Creating User
+                            Updating User
                         </Breadcrumb.Item>
                     </Breadcrumb>
-
 
                     <section className="bg-white dark:bg-gray-900">
                         <div className="mx-auto divide-y mt-2">
@@ -125,7 +126,7 @@ export default function Add({ auth }){
                             <div className="grid grid-cols-4 gap-4">
 
                                 <div className="col-span-2">
-                                    <h2 className="mb-4 mt-4 text-xl font-bold text-gray-900 dark:text-white"><span className="text-blue-500">Creating</span> a New User</h2>
+                                    <h2 className="mb-4 mt-4 text-xl font-bold text-gray-900 dark:text-white"><span className="text-red-500">Updating</span> an Existing User</h2>
                                 </div>
                             </div>
 
@@ -138,7 +139,7 @@ export default function Add({ auth }){
                                                 <div>
                                                     <h2 className="text-3xl font-bold tracking-tight text-gray-900">User Information</h2>
                                                     <p className="mt-4 leading-7 text-gray-600">
-                                                        .
+
                                                     </p>
                                                 </div>
                                                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:col-span-2 lg:gap-8">
@@ -164,7 +165,6 @@ export default function Add({ auth }){
                                                                         onChange={(e) => setData('company', e.target.value)}
                                                                         required
                                                                     >
-                                                                        <option></option>
                                                                         {/* Iterate all the Languages */}
                                                                         {companies.map((items, key) => {
                                                                             return <option
@@ -176,8 +176,6 @@ export default function Add({ auth }){
                                                                 </div>
                                                             </div>
                                                         </div>
-
-
 
                                                         <div className="grid grid-cols-2 gap-4">
 
@@ -196,6 +194,7 @@ export default function Add({ auth }){
                                                                     type="text"
                                                                     value={data.first_name}
                                                                     onChange={(e) => setData('first_name', e.target.value)}
+                                                                    autoFocus
                                                                 />
                                                             </div>
 
@@ -259,7 +258,6 @@ export default function Add({ auth }){
                                                                         onChange={(e) => setData('language', e.target.value)}
                                                                         required
                                                                     >
-                                                                        <option></option>
                                                                         {/* Iterate all the Languages */}
                                                                         {languages.map((items, key) => {
                                                                             return <option
@@ -281,10 +279,51 @@ export default function Add({ auth }){
                                                                         id="is_active"
                                                                     />
                                                                     <Label htmlFor="promotion">
-                                                                        Is Active
+                                                                        { userData[0].is_active === 1 ? (
+                                                                            <Badge className="w-48" icon={HiCheck} color="info">This User is Currently Active</Badge>
+                                                                        ):(
+                                                                            <Badge className="w-48" icon={HiBan} color="failure">This User is Currently Inactive</Badge>
+                                                                        ) }
                                                                     </Label>
                                                                 </div>
                                                             </div>
+                                                        </div>
+
+                                                        <label
+                                                            htmlFor="members"
+                                                            className="block mb-2 mt-4 text-md font-bold text-gray-900 dark:text-white"
+                                                        >
+                                                            Members
+                                                        </label>
+                                                        <div className="items-center md:flex md:space-x-4">
+
+                                                            <div className="flex flex-shrink-0 mb-4 -space-x-4 md:mb-0">
+                                                                <img
+                                                                    className="w-8 h-8 rounded-full border-2 border-white dark:border-gray-800"
+                                                                    src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/helene-engels.png"
+                                                                    alt="Helene Engels"/>
+                                                                <img
+                                                                    className="w-8 h-8 rounded-full border-2 border-white dark:border-gray-800"
+                                                                    src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/robert-brown.png"
+                                                                    alt="Robert Brown"/>
+                                                                <img
+                                                                    className="w-8 h-8 rounded-full border-2 border-white dark:border-gray-800"
+                                                                    src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png"
+                                                                    alt="Bonnie Green"/>
+                                                                <a className="flex justify-center items-center w-8 h-8 text-xs font-medium text-white bg-gray-700 rounded-full border-2 border-white hover:bg-gray-600 dark:border-gray-800"
+                                                                   href="#">+9</a>
+                                                            </div>
+                                                            <button type="button"
+                                                                    className="inline-flex items-center py-2 px-3 text-xs font-medium text-gray-900 bg-white rounded-lg border border-gray-200 focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                                                                <svg aria-hidden="true" className="mr-1 -ml-1 w-4 h-4"
+                                                                     fill="currentColor" viewBox="0 0 20 20"
+                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                    <path fillRule="evenodd"
+                                                                          d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                                                          clipRule="evenodd"></path>
+                                                                </svg>
+                                                                Add member
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -298,8 +337,6 @@ export default function Add({ auth }){
                                 </div>
 
 
-
-
                                 <div className="py-24 sm:py-8 divide-y">
                                     <div className=" max-w-7xl px-6 lg:px-1">
                                         <div className="mx-auto max-w-2xl space-y-16 divide-y lg:mx-0 lg:max-w-none">
@@ -309,6 +346,23 @@ export default function Add({ auth }){
                                                     <p className="mt-4 leading-7 text-gray-600">
                                                         Configure the user permissions, roles
                                                     </p>
+                                                    <div className="flex gap-x-4 mt-4">
+                                                        <dt className="flex-none">
+                                                            <span className="sr-only">User Name</span>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                 viewBox="0 0 24 24" strokeWidth="1.5"
+                                                                 stroke="currentColor" className="w-5 h-5">
+                                                                <path strokeLinecap="round" strokeLinejoin="round"
+                                                                      d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                            </svg>
+                                                        </dt>
+                                                        <dd>
+                                                            <h4 className="hover:text-gray-900">
+                                                                {data.first_name} {data.last_name}
+                                                            </h4>
+
+                                                        </dd>
+                                                    </div>
                                                 </div>
                                                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:col-span-2 lg:gap-8">
                                                     <div className="col-span-2">
@@ -326,7 +380,6 @@ export default function Add({ auth }){
                                                                 onChange={(e) => setData('levels', e.target.value)}
                                                                 required
                                                             >
-                                                                <option></option>
                                                                 {/* Iterate all the Languages */}
                                                                 {levels.map((items, key) => {
                                                                     return <option
@@ -349,7 +402,7 @@ export default function Add({ auth }){
                                                                         </label>
 
                                                                         <div id={'div-checkbox'}>
-                                                                            {/*<SectionPermissions userPermissions={userPermissions}></SectionPermissions>*/}
+                                                                            <SectionPermissions userPermissions={userPermissions}></SectionPermissions>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -375,14 +428,10 @@ export default function Add({ auth }){
                                     </svg>
                                 </button>
                             </form>
-
                         </div>
                     </section>
-
-
                 </div>
             </div>
-
 
 
         </AuthenticatedLayout>

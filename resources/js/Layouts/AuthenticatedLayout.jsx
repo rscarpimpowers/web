@@ -1,14 +1,32 @@
-import {Sidebar}                    from 'flowbite-react';
+import {useState}                   from "react";
 import {Link}                       from "@inertiajs/react";
 
 
-import {HiArrowSmRight, HiInbox, HiShoppingBag, HiTable, HiUser, HiUserGroup} from 'react-icons/hi';
+import SidebarLeft                  from "@/Layouts/Partials/SidebarLeft.jsx";
+import SidebarAdministratorLeft     from "@/Layouts/Partials/Administrator/SidebarAdministratorLeft.jsx";
 
+import PowersLogo                   from "@/../../public/images/powers/powers-brand.svg";
 
 export default function Authenticated({ user, children }) {
 
     // Destructuring.
-    const {level_id} = user;
+    const {level_id}                            = user;
+    const [company, setCompany]          = useState([]);
+
+
+    useState(() => {
+
+        /* Getting the Company Data Based on the User company_id  */
+        axios.post('/company', {com_id: user.company_id})
+            .then((response => {
+                setCompany(response.data[0])
+            }))
+    }, [])
+
+
+
+
+
 
     const handleLeftSidebar = () => {
 
@@ -18,18 +36,17 @@ export default function Authenticated({ user, children }) {
             /* Super Admin */
             case 1:
 
-                return ''
+                return <SidebarLeft></SidebarLeft>
+
+            /* Administrator */
+            case 2:
+
+                return <SidebarAdministratorLeft></SidebarAdministratorLeft>
         }
     }
 
 
-
-
-
     return (
-
-
-
 
         <div className="antialiased bg-gray-50 dark:bg-gray-900">
             <nav
@@ -65,15 +82,35 @@ export default function Authenticated({ user, children }) {
                             </svg>
                             <span className="sr-only">Toggle sidebar</span>
                         </button>
-                        <a href="https://flowbite.com" className="flex mr-4 items-center justify-center">
-                            <img
-                                src="https://flowbite.s3.amazonaws.com/logo.svg"
-                                className="mr-3 h-8"
-                                alt="Flowbite Logo"
-                            />
-                            <span
-                                className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
-                        </a>
+                        <Link href={route('dashboard')}  className="flex mr-4 items-center justify-center">
+
+                            { company.com_img_path === null ? (
+                                    <>
+                                        <img
+                                            src={PowersLogo}
+                                            className="mr-3 h-8"
+                                            alt="The Powers Company Logo"
+                                        />
+
+                                        <span className="self-center text-xsfont-semibold whitespace-nowrap dark:text-white">
+                                            The Powers Company
+                                        </span>
+                                    </>
+                            ): (
+                                <>
+                                    <img
+                                        src={company.com_img_path}
+                                        className="mr-3 h-8"
+                                        alt="Flowbite Logo"
+                                    />
+                                    <span className="self-center text-xs font-semibold whitespace-nowrap dark:text-white">
+                                        The Powers Company
+                                    </span>
+                                </>
+                            ) }
+
+
+                        </Link>
                         <form action="#" method="GET" className="hidden md:block lg:pl-2">
                             <label htmlFor="topbar-search" className="sr-only">Search</label>
                             <div className="relative md:w-64 lg:w-96">
@@ -802,90 +839,90 @@ export default function Authenticated({ user, children }) {
                     { handleLeftSidebar() }
 
                     {/*  SideBar */}
-                    <Sidebar aria-label="Sidebar with multi-level dropdown example">
-                        <Sidebar.Items>
-                            <Sidebar.ItemGroup>
+                    {/*<Sidebar aria-label="Sidebar with multi-level dropdown example">*/}
+                    {/*    <Sidebar.Items>*/}
+                    {/*        <Sidebar.ItemGroup>*/}
 
-                                <Link
-                                    href={route('dashboard')}
-                                    className="flex justify-left rounded-lg p-2 text-base font-normal text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 group w-full transition duration-75"
-                                >
-                                    <svg
-                                        aria-hidden="true"
-                                        className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"></path>
-                                    </svg>
-                                    <span className="ml-3">Dashboard</span>
-                                </Link>
+                    {/*            <Link*/}
+                    {/*                href={route('dashboard')}*/}
+                    {/*                className="flex justify-left rounded-lg p-2 text-base font-normal text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 group w-full transition duration-75"*/}
+                    {/*            >*/}
+                    {/*                <svg*/}
+                    {/*                    aria-hidden="true"*/}
+                    {/*                    className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"*/}
+                    {/*                    fill="currentColor"*/}
+                    {/*                    viewBox="0 0 20 20"*/}
+                    {/*                    xmlns="http://www.w3.org/2000/svg">*/}
+                    {/*                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"></path>*/}
+                    {/*                </svg>*/}
+                    {/*                <span className="ml-3">Dashboard</span>*/}
+                    {/*            </Link>*/}
 
 
-                                <Sidebar.Collapse
-                                    icon={HiUserGroup}
-                                    label="Users"
-                                >
-                                        <Link
-                                            href={route('users.show')}
-                                            className="flex items-center justify-center rounded-lg p-2 text-base font-normal text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 group w-full pl-8 transition duration-75"
-                                        >
-                                            All users
-                                        </Link>
+                    {/*            <Sidebar.Collapse*/}
+                    {/*                icon={HiUserGroup}*/}
+                    {/*                label="Users"*/}
+                    {/*            >*/}
+                    {/*                    <Link*/}
+                    {/*                        href={route('users.show')}*/}
+                    {/*                        className="flex items-center justify-center rounded-lg p-2 text-base font-normal text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 group w-full pl-8 transition duration-75"*/}
+                    {/*                    >*/}
+                    {/*                        All users*/}
+                    {/*                    </Link>*/}
 
-                                    <Sidebar.Item href="#">
-                                        Add a New User
-                                    </Sidebar.Item>
-                                    <Sidebar.Item href="#">
-                                        Refunds
-                                    </Sidebar.Item>
-                                    <Sidebar.Item href="#">
-                                        Shipping
-                                    </Sidebar.Item>
-                                </Sidebar.Collapse>
-                                <Sidebar.Item
-                                    href="#"
-                                    icon={HiInbox}
-                                >
-                                    <p>
-                                        Inbox
-                                    </p>
-                                </Sidebar.Item>
-                                <Sidebar.Item
-                                    href="#"
-                                    icon={HiUser}
-                                >
-                                    <p>
-                                        Users
-                                    </p>
-                                </Sidebar.Item>
-                                <Sidebar.Item
-                                    href="#"
-                                    icon={HiShoppingBag}
-                                >
-                                    <p>
-                                        Products
-                                    </p>
-                                </Sidebar.Item>
-                                <Sidebar.Item
-                                    href="#"
-                                    icon={HiArrowSmRight}
-                                >
-                                    <p>
-                                        Sign In
-                                    </p>
-                                </Sidebar.Item>
-                                <Sidebar.Item
-                                    href="#"
-                                    icon={HiTable}
-                                >
-                                    <p>
-                                        Sign Up
-                                    </p>
-                                </Sidebar.Item>
-                            </Sidebar.ItemGroup>
-                        </Sidebar.Items>
-                    </Sidebar>
+                    {/*                <Sidebar.Item href="#">*/}
+                    {/*                    Add a New User*/}
+                    {/*                </Sidebar.Item>*/}
+                    {/*                <Sidebar.Item href="#">*/}
+                    {/*                    Refunds*/}
+                    {/*                </Sidebar.Item>*/}
+                    {/*                <Sidebar.Item href="#">*/}
+                    {/*                    Shipping*/}
+                    {/*                </Sidebar.Item>*/}
+                    {/*            </Sidebar.Collapse>*/}
+                    {/*            <Sidebar.Item*/}
+                    {/*                href="#"*/}
+                    {/*                icon={HiInbox}*/}
+                    {/*            >*/}
+                    {/*                <p>*/}
+                    {/*                    Inbox*/}
+                    {/*                </p>*/}
+                    {/*            </Sidebar.Item>*/}
+                    {/*            <Sidebar.Item*/}
+                    {/*                href="#"*/}
+                    {/*                icon={HiUser}*/}
+                    {/*            >*/}
+                    {/*                <p>*/}
+                    {/*                    Users*/}
+                    {/*                </p>*/}
+                    {/*            </Sidebar.Item>*/}
+                    {/*            <Sidebar.Item*/}
+                    {/*                href="#"*/}
+                    {/*                icon={HiShoppingBag}*/}
+                    {/*            >*/}
+                    {/*                <p>*/}
+                    {/*                    Products*/}
+                    {/*                </p>*/}
+                    {/*            </Sidebar.Item>*/}
+                    {/*            <Sidebar.Item*/}
+                    {/*                href="#"*/}
+                    {/*                icon={HiArrowSmRight}*/}
+                    {/*            >*/}
+                    {/*                <p>*/}
+                    {/*                    Sign In*/}
+                    {/*                </p>*/}
+                    {/*            </Sidebar.Item>*/}
+                    {/*            <Sidebar.Item*/}
+                    {/*                href="#"*/}
+                    {/*                icon={HiTable}*/}
+                    {/*            >*/}
+                    {/*                <p>*/}
+                    {/*                    Sign Up*/}
+                    {/*                </p>*/}
+                    {/*            </Sidebar.Item>*/}
+                    {/*        </Sidebar.ItemGroup>*/}
+                    {/*    </Sidebar.Items>*/}
+                    {/*</Sidebar>*/}
 
                     <ul className="space-y-2">
                         <li>
