@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Ramsey\Uuid\Uuid;
 
-class UserPermissions extends Model
+class CompanyTypes extends Model
 {
     use HasFactory;
+
+    protected $table = 'company_types';
+
+    protected $fillable = ['typ_id', 'typ_description'];
 }

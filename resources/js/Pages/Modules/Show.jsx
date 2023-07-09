@@ -1,10 +1,11 @@
 
 import AuthenticatedLayout          from '@/Layouts/AuthenticatedLayout.jsx';
 import {Head, Link} from "@inertiajs/react";
+import CustomTable from "@/Components/CustomTable.jsx";
 
 
-export default function Show({auth}){
-
+export default function Show({auth, modulesData}){
+console.log(modulesData)
     return(
         <AuthenticatedLayout
             user={auth.user}
@@ -41,6 +42,60 @@ export default function Show({auth}){
                             </div>
                         </div>
                     </section>
+
+                    <CustomTable
+                        auth={auth}
+                        data={modulesData}
+                        permissions={[]}
+                        headerconfig={{
+                            headerItems: {
+                                item0: {
+                                    title: 'Status',
+                                    class: 'flex items-center text-center justify-center'
+                                    },
+                                item1: {
+                                    title: 'Module Name'
+                                },
+                                item2: {
+                                    title: 'Module Description'
+                                },
+                                item3: {
+                                    title: ''
+                                },
+                                item4: {
+                                    title: ''
+                                }
+                            }
+                        }}
+                        rowconfig={{
+                                item0: {
+                                    field: 'is_active',
+                                    type: 'chk',
+                                    class: 'flex items-center text-center justify-center'
+                                },
+                                item1: {
+                                    field: 'mod_name',
+                                    type: 'r'
+                                },
+                                item2: {
+                                    field: 'mod_description',
+                                    type: 'r'
+                                },
+                                item3: {
+                                    type: 'btn',
+                                    typeBtn: 'edit',
+                                    route: 'user.update'
+                                },
+                                item4: {
+                                    type: 'btn',
+                                    typeBtn: 'delete',
+                                    route: 'user.update',
+                                    textConfirm: "You won't be able to revert this process.<br/>The Module will be Permanently Deleted!",
+                                    textBtnConfirmation: 'Proceed',
+                                    fieldToDelete: 'uuid'
+                                }
+                            }}
+                        ></CustomTable>
 
 
                 </div>

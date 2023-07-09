@@ -1,6 +1,36 @@
 
-import _ from 'lodash';
 
+
+/**
+ * Name         : FUncheckCheckAllComboBoxes.
+ * Objective    : Check / UnCheck All ComboBoxes inside Specific Div.
+ * Developer    : Ricardo Scarpim
+ * Date         : Jul/6/23
+ *
+ * @param pType
+ * @param pDomDivObj
+ * @constructor
+ */
+export const FUncheckCheckAllComboBoxes = (pType, pDomDivObj) => {
+
+    /* Getting the Specific DOM Element to Search for the Combos*/
+    const vElements = pDomDivObj.querySelectorAll('input, combobox');
+
+    /* Iterates the DOM Element */
+    for(let i = 0, elem; elem = vElements[i++];) {
+
+        /* Selecting only */
+        switch (elem.type) {
+
+            /* Checkbox Element */
+            case 'checkbox':
+
+                /* Check / Uncheck based on the param pType */
+                elem.checked = pType === 0;
+                break;
+        }
+    }
+}
 
 
 
@@ -21,7 +51,7 @@ export const FCheckPermissions = (pScreenName = '', pPermissions) => {
     let toReturn = "";
 
     Object.values(pPermissions).forEach(function (item){
-        console.log(item)
+
         if(item.per_screen === pScreenName){
             toReturn =  item.per_description
         }
@@ -52,6 +82,24 @@ export const FIsEmpty = (e) => {
             return true;
         default:
             return false;
+    }
+}
+
+
+
+export const FSetComboDefaultPermissions = (pDomObj, pPermissions) => {
+
+    /* If there's a Valid Permission  */
+    if(!FIsEmpty(pPermissions)){
+
+        /* Checking all the Permissions */
+        pPermissions.forEach(function (permission, index){
+
+            /* Getting the Screen Name Information */
+            let vScreen = permission.def_screen;
+
+            console.log(vScreen)
+        });
     }
 }
 
@@ -93,80 +141,102 @@ export const FGetSetAllComboPermissions = (pDomObj, pPermissions) => {
 
 
 
-export const FSavePermissions = (pDomObj) => {
+export const FSavePermissions = () => {
 
-    const vElements = pDomObj.querySelectorAll('input, combobox');
+    document.querySelectorAll('[role="tabpanel"]').forEach(function (el, i){
 
-    let vScreen               = "";
-    let vToContinue           = "";
-    let vPermissions          = "";
+        /* Getting all Tabs to Check if is a Tab Title Such Website, etc */
+        let vDOMTabElement = el.getAttribute('id').substring(1, 3)
 
+        /* Avoiding the Tabs Website, Phone Devices, etc. */
+        if(vDOMTabElement !== 'r3') {
 
-    /* Iterate all the Combobox Elements to Get all the Permissions and Concatenate as a string. */
-    for(let i = 0, elem; elem = vElements[i++];) {
+            /* Get all the Selected Elements. */
+            const vElements = el.querySelectorAll('input, combobox')
 
-        /* Setting the First Page  */
-        vScreen = elem.getAttribute('data-screen');
-
-        /* Selecting only */
-        switch (elem.type) {
-
-            /* Checkbox Element */
-            case 'checkbox':
-
-                if (vScreen === vToContinue) {
-
-                    vPermissions += elem.checked ? 1 : 0;
-                } else {
-
-                    if(vPermissions === ''){
-                        vPermissions += elem.checked ? 1 : 0;
-                    } else vPermissions = ""
-
-                    vToContinue = elem.getAttribute('data-screen');
-                }
-
-                console.log(vPermissions)
-
-
-                break;
+            /* Function to Sum all the Permissions */
+            FSumPermissions(vElements);
         }
-
-    }
+    });
 }
 
-export const FGetAllCheckBoxesTemp = (pDomObj, pPermissions) => {
 
-    /* Iterate all the Combobox Elements */
-    for(let i = 0, elem; elem = vElements[i++];){
+/**
+ * Name         : FSumPermissions
+ * Objective    : Create a string with all the Permissions 0 = No Allowed 1 = Allowed, concatenated
+ * Developer    : Ricardo Scarpim
+ * Date         : Jun/20/23
+ * Return       : String with all the Permissions
+ * Use          : FCheckPermissions(DOM Element that contains all the checkboxes);
+ * @param pDomElements
+ * @constructor
+ */
+export const FSumPermissions = (pDomElements) => {
 
+    let toSum                   = "";
+    let vElementData            = ""
+
+    for(let i = 0, elem; elem = pDomElements[i++];) {
+
+        /* Only Checkbox and Inputs */
         switch (elem.type){
 
             case 'checkbox':
+            case 'input':
 
-                /* Get the Screen Permission */
-                let vScreen = elem.getAttribute('data-screen');
-
-                /* Checking for the Screen Device. */
-                let vDevice = elem.getAttribute('data-device');
-
-                /* Get the Elem id */
-                let vElemId = elem.getAttribute('id');
-
-                pPermissions.forEach(function (screen, index){
-
-                    /* If The Device and Screen are in the Array */
-                    if( (vScreen.toLowerCase().trim() === screen.per_screen.toLowerCase().trim()) && (vDevice === screen.per_device.toString()) ){
-
-                        /* Iterate the Permission */
-                        for(let j = 0; j < screen.per_description.length; j++){
-
-                            /* Check / Uncheck the ComboBox.  */
-                            screen.per_description[j] === '1' ? elem.setAttribute('checked', 'checked'): false;
-                        }
-                    }
-                })
+                /* Create a string with 0 and 1 according to the element check */
+                toSum += elem.checked ? 1: 0;
                 break;
         }
+
+        /* Valid Element */
+        if(elem.getAttribute('data') !== null){
+
+            /* First Checkbox contains the data*/
+            if(i <= 1){
+                vElementData = elem.getAttribute('data').split(',')
+            }
+        }
     }
+
+    /* Function to Return an Object with all the Permissions Data. */
+    FReturnPermissionsObject(toSum, pDomElements, vElementData)
 }
+
+
+/**
+ * Name         : FReturnPermissionsObject
+ * Objective    : Return a Object with all the Permission Data.
+ * Developer    : Ricardo Scarpim
+ * Date         : Jun/20/23
+ * Return       : String with all the Permissions
+ * Use          : FReturnPermissionsObject(pPermissions,pDomElements,pElementData);
+ * @param pPermissions  = The Concatenated string with the Permissions,Example 1110110
+ * @param pDomElements  =
+ * @param pElementData
+ * @constructor
+ */
+export const FReturnPermissionsObject = (pPermissions, pDomElements, pElementData) => {
+
+    let vPermissionsObj = [];
+
+    /* Iterating the Split Array to Populate the Object, when is the Last Iteration */
+    for(let i = 0; i < pElementData.length; i++){
+
+        vPermissionsObj = {
+            per_device      : pElementData[0],
+            per_sequence    : pElementData[1],
+            per_screen      : pElementData[2],
+            user_id         : pElementData[3],
+            per_id          : pElementData[4],
+            level_id        : pElementData[5],
+            per_description : pPermissions,
+            pType           : pElementData[6]
+        }
+    }
+
+    /* Calling the API to Save the Information */
+    axios({method: "post", url: "/permissions", data: vPermissionsObj}).then((res) => { console.log(res)})
+}
+
+

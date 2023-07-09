@@ -1,7 +1,8 @@
 import { Label, Tabs }              from "flowbite-react";
-import {HiOutlineGlobeAlt, HiOutlinePhone}
+import {HiOutlineDeviceTablet, HiOutlineGlobeAlt, HiOutlinePhone}
                                     from "react-icons/hi";
-import TabGroupDashboard            from "@/Pages/User/Partials/Sections/TabGroupDashboard.jsx";
+
+import TabGroupDashboard            from "@/Pages/User/Partials/Sections/Edit/TabGroupDashboard.jsx";
 import {FGetSetAllComboPermissions} from "@/Helpers/Utils.js";
 import {useEffect}                  from "react";
 
@@ -9,14 +10,16 @@ export default function SectionPermissions({ userPermissions }){
 
     useEffect(() => {
 
-        /* Setting the ComboBoxes with the Permissions */
-        FGetSetAllComboPermissions(document.getElementById('div-checkbox'), userPermissions)
+        /* Checking for Permission for this User.*/
+        if(userPermissions !== undefined )
+
+            /* Setting the ComboBoxes with the Permissions */
+            FGetSetAllComboPermissions(document.getElementById('div-checkbox'), userPermissions)
     }, [])
 
 
 
     return(
-
 
         <Tabs.Group aria-label="Default tabs" style="default">
 
@@ -32,6 +35,13 @@ export default function SectionPermissions({ userPermissions }){
 
             {/* Section  Phone */}
             <Tabs.Item icon={HiOutlinePhone} title="Phone Devices">
+
+                {/* Page Users   */}
+
+            </Tabs.Item>
+
+            {/* Section  Phone */}
+            <Tabs.Item icon={HiOutlineDeviceTablet} title="Tablet Devices">
 
                 {/* Page Users   */}
 

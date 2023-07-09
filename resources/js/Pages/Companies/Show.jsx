@@ -1,32 +1,9 @@
-import {useEffect, useState} from "react";
-
 import {Head, Link}                 from "@inertiajs/react";
 import AuthenticatedLayout          from '@/Layouts/AuthenticatedLayout.jsx';
+import CustomTable from "@/Components/CustomTable.jsx";
 
-
-import CustomTable                  from "@/Components/CustomTable.jsx";
-
-import {FCheckPermissions}          from "@/Helpers/Utils.js";
-
-
-
-
-
-
-export default function Show({auth, userData, permissions }){
-
-    const [screenPermissions, setScreenPermissions] = useState('');
-
-    /* Get all the Permissions per Page. */
-    useEffect(() => {
-
-        /* Get the Permissions for the Page USERS_SHOW */
-        setScreenPermissions( FCheckPermissions('USERS_SHOW', permissions.permissions) )
-    }, [])
-
-
-
-
+export default function show({ auth, companiesData }){
+console.log(companiesData)
     return(
         <AuthenticatedLayout
             user={auth.user}
@@ -45,21 +22,20 @@ export default function Show({auth, userData, permissions }){
                                 <div
                                     className="flex-row items-center justify-between p-4 space-y-3 sm:flex sm:space-y-0 sm:space-x-4">
                                     <div>
-                                        <h5 className="mr-3 font-semibold dark:text-white">User's List</h5>
+                                        <h5 className="mr-3 font-semibold dark:text-white">Companies List</h5>
                                         <p className="text-gray-500 dark:text-gray-400">Manage all your existing
-                                            users or add a new one</p>
+                                            companies or add a new one</p>
                                     </div>
                                     <Link
-                                        href={route('user.create')}
+                                        href={route('company.create')}
                                         className="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-blue-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
                                     >
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-2 -ml-1"
-                                             viewBox="0 0 20 20" fill="currentColor"
-                                             aria-hidden="true">
-                                            <path
-                                                d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"/>
+                                        <svg className="w-3.5 h-3.5 mr-2 -ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
+                                             stroke="currentColor" >
+                                            <path strokeLinecap="round" strokeLinejoin="round"
+                                                  d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/>
                                         </svg>
-                                        Add new user
+                                        Add new company
                                     </Link>
                                 </div>
                             </div>
@@ -68,8 +44,8 @@ export default function Show({auth, userData, permissions }){
 
                     <CustomTable
                         auth={ auth }
-                        data={ userData.data }
-                        permissions={ screenPermissions }
+                        data={ companiesData }
+                        permissions={ [] }
                         headerconfig ={{
                             headerItems: {
                                 item0: {
@@ -77,53 +53,33 @@ export default function Show({auth, userData, permissions }){
                                     class: 'flex items-center text-center justify-center'
                                 },
                                 item1: {
-                                    title: 'Name',
+                                    title: 'Company',
                                 },
                                 item2: {
-                                    title: 'E-mail',
-                                },
-                                item3: {
-                                    title: 'User Level',
-                                },
-                                item4:{
-                                    title: 'Company'
-                                },
-                                item5: {
                                     title: ''
                                 },
-                                item6:{
+                                item3:{
                                     title:''
                                 },
                             },
                         }}
                         rowconfig={{
                             item0:{
-                                field: 'is_active',
+                                field: 'com_is_active',
                                 type: 'chk',
                                 class: 'flex items-center text-center justify-center'
                             },
                             item1:{
-                                field: 'name',
-                                type: 'r'
-                            },
-                            item2:{
-                                field: 'email',
-                                type: 'r'
-                            },
-                            item3:{
-                                field: 'lev_description',
-                                type: 'r'
-                            },
-                            item4:{
                                 field: 'com_name',
                                 type: 'r'
                             },
-                            item5:{
+
+                            item2:{
                                 type: 'btn',
                                 typeBtn: 'edit',
                                 route: 'user.update'
                             },
-                            item6:{
+                            item3:{
                                 type: 'btn',
                                 typeBtn: 'delete',
                                 route: 'user.update',

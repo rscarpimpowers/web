@@ -22,7 +22,7 @@ export default function Add({ auth }){
             user={auth.user}
             header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Profile</h2>}
         >
-            <Head title="Add User" />
+            <Head title="Add Module" />
 
 
             <div className="space-y-6">
@@ -46,8 +46,8 @@ export default function Add({ auth }){
 
                             <div className="grid grid-cols-4 gap-4">
 
-                                <div className="col-span-2">
-                                    <h2 className="mb-4 mt-4 text-xl font-bold text-gray-900 dark:text-white"><span className="text-blue-500">Creating</span> a New Module</h2>
+                                <div className="col-span-4">
+                                    <h2 className="mb-4 mt-4 text-3xl font-bold tracking-tight text-gray-900 float-right"><span className="text-blue-500">Creating</span> a New Module</h2>
                                 </div>
                             </div>
 

@@ -38,28 +38,6 @@ const handleDelete = (e) => {
 
 
 export default function CustomTable({...props}){
-
-
-    // const fetchPermissions = () => {
-    //
-    //     let formData = new FormData();
-    //
-    //     /* Populating the formData  */
-    //     Object.keys(props.axiosconfig.axios.data).map((key, i) => {
-    //
-    //         formData.append(key, props.axiosconfig.axios.data[key])
-    //     })
-    //
-    //     /* Calling the Api */
-    //     axios({
-    //         method: "post",
-    //         url: props.axiosconfig.axios.url,
-    //         data: formData
-    //     }).then(function (response){
-    //         console.log(response.data)
-    //     })
-    // }
-
     return(
 
         <Table striped {...props}>
@@ -79,76 +57,75 @@ export default function CustomTable({...props}){
 
                     return <Table.Row key={i} className="bg-red-700 dark:border-gray-700 dark:bg-gray-800">
 
-                    {/*  Iterates the Props to create all the Table Cell's   */}
-                    { Object.keys(props.rowconfig).map((key, item) => {
+                        {/*  Iterates the Props to create all the Table Cell's   */}
+                        { Object.keys(props.rowconfig).map((key, item) => {
 
-                        /* Creating the Row Based on the type Selected. */
-                        switch (props.rowconfig[key].type){
+                            /* Creating the Row Based on the type Selected. */
+                            switch (props.rowconfig[key].type){
 
-                            /* Case is a Regular Row */
-                            case 'r':
+                                /* Case is a Regular Row */
+                                case 'r':
 
-                                return <Table.Cell key={item}
-                                    className={`${props.rowconfig[key].class !== ""? props.rowconfig[key].class: ''}`}
-                                >{items[props.rowconfig[key].field]}</Table.Cell>
+                                    return <Table.Cell key={item}
+                                        className={`${props.rowconfig[key].class !== ""? props.rowconfig[key].class: ''}`}
+                                    >{items[props.rowconfig[key].field]}</Table.Cell>
 
-                            /* Case is a CheckBox */
-                            case 'chk':
+                                /* Case is a CheckBox */
+                                case 'chk':
 
-                                return <Table.Cell key={item}
-                                    className={`${props.rowconfig[key].class !== ""? props.rowconfig[key].class: ''}`}
-                                >
-                                    <div className={`flex items-center gap-2`}>
+                                    return <Table.Cell key={item}
+                                        className={`${props.rowconfig[key].class !== ""? props.rowconfig[key].class: ''}`}
+                                    >
+                                        <div className={`flex items-center gap-2`}>
 
-                                        { items['is_active'] === 1? (
+                                            { items[props.rowconfig[key]['field']] === 1? (
 
-                                            /* Showing the Active Badge */
-                                            <Badge className="w-20" icon={HiCheck} color="info">Active</Badge>
-                                        ):(
+                                                /* Showing the Active Badge */
+                                                <Badge className="w-20" icon={HiCheck} color="info">Active</Badge>
+                                            ):(
 
-                                            /* Showing the Inactive Badger */
-                                            <Badge className="w-20" icon={HiBan} color="failure">Inactive</Badge>
-                                        )}
-                                    </div>
-                                </Table.Cell>
+                                                /* Showing the Inactive Badger */
+                                                <Badge className="w-20" icon={HiBan} color="failure">Inactive</Badge>
+                                            )}
+                                        </div>
+                                    </Table.Cell>
 
-                            /* Case is a Button  */
-                            case 'btn':
+                                /* Case is a Button  */
+                                case 'btn':
 
-                                /* Creating the Button according to the btn */
-                                switch (props.rowconfig[key].typeBtn){
+                                    /* Creating the Button according to the btn */
+                                    switch (props.rowconfig[key].typeBtn){
 
-                                    /* Edit Button */
-                                    case 'edit':
-                                        return <Table.Cell key={item}
-                                            className={`w-24 ${props.rowconfig[key].class !== ""? props.rowconfig[key].class: ''}`}
-                                        >
-                                            <Link href={route(`${props.rowconfig[key].route}`, `${items['uuid']}`)}>
-                                                <Button color="warning" className="w-24 h-7">
+                                        /* Edit Button */
+                                        case 'edit':
+                                            return <Table.Cell key={item}
+                                                className={`w-24 ${props.rowconfig[key].class !== ""? props.rowconfig[key].class: ''}`}
+                                            >
+                                                <Link href={route(`${props.rowconfig[key].route}`, `${items['uuid']}`)}>
+                                                    <Button color="warning" className="w-24 h-7">
 
-                                                    <HiOutlinePencilSquare className="mr-2 h-3.5 w-3.5" />
-                                                        Edit
-                                                </Button>
-                                            </Link>
-                                        </Table.Cell>
+                                                        <HiOutlinePencilSquare className="mr-2 h-3.5 w-3.5" />
+                                                            Edit
+                                                    </Button>
+                                                </Link>
+                                            </Table.Cell>
 
-                                    /* Delete Button */
-                                    case 'delete':
-                                        return <Table.Cell key={item}
-                                            className={`w-24 ${props.rowconfig[key].class !== ""? props.rowconfig[key].class: ''}`}
-                                        >
-                                            <Link href={route(`${props.rowconfig[key].route}`, `${items['uuid']}`)}>
-                                                <Button color="failure" className="w-24 h-7">
+                                        /* Delete Button */
+                                        case 'delete':
+                                            return <Table.Cell key={item}
+                                                className={`w-24 ${props.rowconfig[key].class !== ""? props.rowconfig[key].class: ''}`}
+                                            >
+                                                <Link href={route(`${props.rowconfig[key].route}`, `${items['uuid']}`)}>
+                                                    <Button color="failure" className="w-24 h-7">
 
-                                                    <HiOutlineTrash className="mr-2 h-3.5 w-3.5" />
-                                                    Delete
-                                                </Button>
-                                            </Link>
-                                        </Table.Cell>
-                                }
-                        }
-                    })}
-
+                                                        <HiOutlineTrash className="mr-2 h-3.5 w-3.5" />
+                                                        Delete
+                                                    </Button>
+                                                </Link>
+                                            </Table.Cell>
+                                    }
+                            }
+                        })}
                     </Table.Row>
                 })}
             </Table.Body>

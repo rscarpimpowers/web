@@ -12,10 +12,10 @@ import {HiBan, HiCheck}
                                                 from "react-icons/hi";
 import {HiOutlineListBullet}                    from "react-icons/hi2";
 
-import {FGetSetAllComboPermissions, FIsEmpty, FSavePermissions}
+import { FIsEmpty, FSavePermissions }
                                                 from "@/Helpers/Utils.js";
 
-import SectionPermissions                       from "@/Pages/User/Partials/Sections/SectionPermissions.jsx";
+import SectionPermissions                       from "@/Pages/User/Partials/Sections/Edit/SectionPermissions.jsx";
 
 
 
@@ -90,7 +90,8 @@ export default function Edit({auth, userData, permissions, userPermissions }){
 
         e.preventDefault();
 
-        let vData = FSavePermissions(document.getElementById('div-checkbox'));
+        /* Saving the User Permissions. */
+        FSavePermissions();
 
     }
 
@@ -125,8 +126,8 @@ export default function Edit({auth, userData, permissions, userPermissions }){
 
                             <div className="grid grid-cols-4 gap-4">
 
-                                <div className="col-span-2">
-                                    <h2 className="mb-4 mt-4 text-xl font-bold text-gray-900 dark:text-white"><span className="text-red-500">Updating</span> an Existing User</h2>
+                                <div className="col-span-4">
+                                    <h2 className="mb-4 mt-4 text-3xl font-bold tracking-tight text-gray-900 float-right"><span className="text-red-500">Updating</span> an Existing User</h2>
                                 </div>
                             </div>
 
@@ -432,8 +433,6 @@ export default function Edit({auth, userData, permissions, userPermissions }){
                     </section>
                 </div>
             </div>
-
-
         </AuthenticatedLayout>
     )
 }

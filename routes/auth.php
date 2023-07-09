@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\CompaniesController;
+use App\Http\Controllers\Auth\CompanyTypeController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\DevicesController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
@@ -11,12 +12,15 @@ use App\Http\Controllers\Auth\ModulesController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\PermissionsDefaultController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\UserLevelsController;
 use App\Http\Controllers\Auth\UserPermissionsController;
 use App\Http\Controllers\Auth\UsersController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
+
+Route::view('message', 'message');
 
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
@@ -64,39 +68,54 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
 
+
+
+    // Company Types
+    Route::post('company-types',                [CompanyTypeController::class,          'getAll']);
+
+    // Permissions
+    Route::post('permissions',                  [UserPermissionsController::class,  'show'])->name('permissions.show');
+
+    // Default Permissions
+    Route::post('default-permissions',          [PermissionsDefaultController::class, 'getPermissions']);
+
+    // Permissions
+    Route::post('permissions',                  [UserPermissionsController::class,      'update']);
+
+    // Languages
+    Route::post('languages',                    [LanguagesController::class,       'showAll']);
+
+    // Levels
+    Route::post('levels',                       [UserLevelsController::class,       'showAll']);
+
+    // Devices
+    Route::post('devices',                      [DevicesController::class,         'showAll']);
+
+});
+
+/*
+ *  Route   : Super Admin.
+ */
+Route::middleware(['auth', 'isSuperAdmin'])->group(function (){
+
+
     // Users
     Route::get('users-show',                [UsersController::class,            'show'])->name('users.show');
-
     Route::get('user-create',               [UsersController::class,            'create'])->name('user.create');
-
     Route::get('user-update/{uuid}',        [UsersController::class,            'update'])->name('user.update');
-
     Route::post('user-verify',              [UsersController::class,            'verifyEmail'])->name('user.verify');
-
-    // Modules
-    Route::get('modules-show',              [ModulesController::class,          'show'])->name('modules.show');
-
-    Route::get('module-create',             [ModulesController::class,          'create'])->name('module.create');
-
 
 
     // Company
-    Route::post('company',                   [CompaniesController::class,        'getData']);
-    Route::post('companies',                [CompaniesController::class,         'getAllWithView']);
+    Route::get('companies-show',                [CompaniesController::class,            'show'])->name('companies.show');
+    Route::get('company-create',                [CompaniesController::class,            'create'])->name('company.create');
+
+    Route::post('company',                      [CompaniesController::class,            'getData']);
+    Route::post('companies',                    [CompaniesController::class,            'getAllWithView']);
 
 
 
-    // Permissions
-    Route::post('permissions',              [UserPermissionsController::class,  'show'])->name('permissions.show');
-
-
-    // Languages
-    Route::post('languages',                 [LanguagesController::class,       'showAll']);
-
-    // Levels
-    Route::post('levels',                    [UserLevelsController::class,       'showAll']);
-
-    // Devices
-    Route::post('devices',                   [DevicesController::class,         'showAll']);
-
+    // Modules
+    Route::get('modules-show',              [ModulesController::class,          'show'])->name('modules.show');
+    Route::get('module-create',             [ModulesController::class,          'create'])->name('module.create');
 });

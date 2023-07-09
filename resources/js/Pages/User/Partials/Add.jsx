@@ -1,12 +1,17 @@
-import {Head, Link, useForm} from "@inertiajs/react";
+import {Head, Link, useForm}            from "@inertiajs/react";
+import {useEffect, useState} from "react";
 import AuthenticatedLayout              from '@/Layouts/AuthenticatedLayout.jsx';
-import {Badge, Breadcrumb, Checkbox, Label, Select, TextInput}
+import {Breadcrumb, Checkbox, Label, Select, TextInput}
                                         from "flowbite-react";
+import Swal                             from "sweetalert2";
 import {HiOutlineListBullet}            from "react-icons/hi2";
-import {HiBan, HiCheck}                 from "react-icons/hi";
-import SectionPermissions               from "@/Pages/User/Partials/Sections/SectionPermissions.jsx";
-import {FIsEmpty, FSavePermissions} from "@/Helpers/Utils.js";
-import {useState} from "react";
+
+
+import {FIsEmpty, FSavePermissions, FUncheckCheckAllComboBoxes}
+                                        from "@/Helpers/Utils.js";
+
+import SectionAddPermissions            from "@/Pages/User/Partials/Sections/Add/SectionAddPermissions.jsx";
+
 
 
 
@@ -22,11 +27,12 @@ import {useState} from "react";
 export default function Add({ auth }){
 
     const [emailDirty, setEmailDirty]       = useState({email: '', dirty: false})
-    const [languages, setLanguages] = useState([]);
-    const [levels, setLevels]       = useState([]);
-    const [companies, setCompanies] = useState([]);
+    const [languages, setLanguages]     = useState([]);
+    const [levels, setLevels]           = useState([]);
+    const [companies, setCompanies]     = useState([]);
+    const [permissions, setPermissions] = useState([]);
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
+    const { data, setData, patch, post, errors, processing, recentlySuccessful } = useForm({
         first_name      : '',
         last_name       : '',
         email           : '',
@@ -48,6 +54,7 @@ export default function Add({ auth }){
         /* Getting all Companies */
         axios({method: "post", url: "/companies"}).then((response) => { setCompanies(response.data)})
     }, [])
+
 
 
 
@@ -88,16 +95,58 @@ export default function Add({ auth }){
     const submit = (e) => {
 
         e.preventDefault();
-
-        let vData = FSavePermissions(document.getElementById('div-checkbox'));
+console.log('call')
+       FSavePermissions();
 
     }
+
+
+    /**
+     *  Name        : handleOnChangeLevels
+     *  Objective   : OnChange handle the User level, by default Permissions
+     *  Developer   : Ricardo Scarpim
+     *  Date        : Jul/6/23
+     *
+     * @param pValue
+     */
+    const handleOnChangeLevels = (pValue) => {
+
+        /* Checking for a Valid Selection */
+        if(!FIsEmpty(pValue)){
+
+            /* Ask if you would like to add the Default Permissions for this User. */
+            Swal.fire({
+                title: 'Load Default?',
+                text: "Would you Like to load the Default Permissions?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, load it'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    /* Call the function to Clean all the Combos */
+                    FUncheckCheckAllComboBoxes(1, document.getElementById('div-checkbox'));
+
+                    /* Call the API to Retrieve the Default Permissions */
+                    axios({ method: "post", url: "/default-permissions", data: {lev_description: pValue}}).then((response) => {
+                        setPermissions(response.data)
+                    });
+                }
+            })
+        }
+    }
+
+
+
+
 
 
     return(
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Profile</h2>}
+
         >
             <Head title="Add User" />
 
@@ -124,12 +173,12 @@ export default function Add({ auth }){
 
                             <div className="grid grid-cols-4 gap-4">
 
-                                <div className="col-span-2">
-                                    <h2 className="mb-4 mt-4 text-xl font-bold text-gray-900 dark:text-white"><span className="text-blue-500">Creating</span> a New User</h2>
+                                <div className="col-span-4">
+                                    <h2 className="mb-4 mt-4 text-3xl font-bold tracking-tight text-gray-900 float-right"><span className="text-blue-500">Creating</span> a New User</h2>
                                 </div>
                             </div>
 
-                            <form onSubmit={submit}>
+                            <form onSubmit={submit} noValidate>
 
                                 <div className="py-24 sm:py-8 divide-y">
                                     <div className=" max-w-7xl px-6 lg:px-1">
@@ -310,6 +359,7 @@ export default function Add({ auth }){
                                                         Configure the user permissions, roles
                                                     </p>
                                                 </div>
+
                                                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:col-span-2 lg:gap-8">
                                                     <div className="col-span-2">
 
@@ -323,7 +373,7 @@ export default function Add({ auth }){
                                                             <Select
                                                                 id="levels"
                                                                 value={data.levels}
-                                                                onChange={(e) => setData('levels', e.target.value)}
+                                                                onChange={(e) => handleOnChangeLevels(e.target.value)}
                                                                 required
                                                             >
                                                                 <option></option>
@@ -349,7 +399,7 @@ export default function Add({ auth }){
                                                                         </label>
 
                                                                         <div id={'div-checkbox'}>
-                                                                            {/*<SectionPermissions userPermissions={userPermissions}></SectionPermissions>*/}
+                                                                            <SectionAddPermissions defaultPermissions={permissions}></SectionAddPermissions>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -378,8 +428,6 @@ export default function Add({ auth }){
 
                         </div>
                     </section>
-
-
                 </div>
             </div>
 
