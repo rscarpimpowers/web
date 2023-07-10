@@ -11,7 +11,7 @@ class PermissionsDefaultController extends Controller
     public function getPermissions(Request $request){
 
         return ViewPermissionsDefault::where('lev_description', '=', $request->lev_description)
-            ->where('def_device', '=', 1)
+            ->where('per_device', '=', 1)
             ->get();
     }
 }

@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\PermissionsDefault;
 use App\Models\UserPermissions;
 use App\Models\UsersMD;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Crypt;
+use function PHPUnit\Framework\isEmpty;
 
 
 class UsersController extends Controller
@@ -43,7 +44,7 @@ class UsersController extends Controller
         /* Selecting all the Permissions for the Selected user, Based on the user_id */
         $toUserPermissions  = UserPermissions::where('user_id', '=', $toUserData[0]['id'])
             ->where('level_id', '=', $toUserData[0]['level_id'])
-            ->get(['per_id', 'uuid', 'user_id', 'level_id', 'per_sequence', 'per_description', 'per_device', 'per_screen']);
+            ->get();
 
         return Inertia::render('User/Partials/Edit', [
             'userData' => $toUserData,

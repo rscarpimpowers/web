@@ -95,10 +95,30 @@ export default function Add({ auth }){
     const submit = (e) => {
 
         e.preventDefault();
-console.log('call')
-       FSavePermissions();
+        console.log('call')
+        FSavePermissions();
 
     }
+
+
+    const handleOnChangeCompany = (e) => {
+
+        /* Getting the Attribute id. */
+        const index         = e.target.selectedIndex;
+        const optionElement          = e.target.childNodes[index];
+        const optionElementId = optionElement.getAttribute('id');
+
+
+        /* Checking for a Valida Selection */
+        if(!FIsEmpty(optionElementId)){
+
+            /* Call the Api to Get all the Modules for the Selected Company. */
+            console.log(optionElementId)
+        }
+    }
+
+
+
 
 
     /**
@@ -106,7 +126,6 @@ console.log('call')
      *  Objective   : OnChange handle the User level, by default Permissions
      *  Developer   : Ricardo Scarpim
      *  Date        : Jul/6/23
-     *
      * @param pValue
      */
     const handleOnChangeLevels = (pValue) => {
@@ -131,6 +150,7 @@ console.log('call')
 
                     /* Call the API to Retrieve the Default Permissions */
                     axios({ method: "post", url: "/default-permissions", data: {lev_description: pValue}}).then((response) => {
+                        console.log(response.data)
                         setPermissions(response.data)
                     });
                 }
@@ -210,7 +230,7 @@ console.log('call')
                                                                     <Select
                                                                         id="companies"
                                                                         value={data.company}
-                                                                        onChange={(e) => setData('company', e.target.value)}
+                                                                        onChange={(e) => handleOnChangeCompany(e)}
                                                                         required
                                                                     >
                                                                         <option></option>

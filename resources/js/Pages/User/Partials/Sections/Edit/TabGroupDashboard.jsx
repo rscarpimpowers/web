@@ -5,8 +5,9 @@ import {HiOutlineGlobeAlt, HiOutlineUsers}
 
 
 export default function TabGroupDashboard({userPermissions}){
-console.log(userPermissions)
+
     return(
+
         <Tabs.Group  className="ml-5 mt-2" aria-label="Tab-Group-Dashboard" style="default">
 
             <Tabs.Item active icon={HiOutlineGlobeAlt} title="Dashboard">
@@ -18,7 +19,9 @@ console.log(userPermissions)
                         <Checkbox id="ck0-dashboard"
                                   data-device="1"
                                   data-screen="dashboard"
-                                  data={`${1},${userPermissions[0].per_sequence},${'dashboard'},${userPermissions[0].user_id},${userPermissions[0].per_id},${userPermissions[0].level_id},${2}`}/>
+                                  data={` ${Object.keys(userPermissions).length !== 0 && userPermissions.constructor === Object  ? (
+                                      `${1},${userPermissions[0].per_sequence},${'dashboard'},${userPermissions[0].user_id},${userPermissions[0].per_id},${userPermissions[0].level_id},${2}`
+                                  ):(``)}`}/>
                         <Label htmlFor="ck0-dashboard" className="font-extrabold">Grant Access to the Menu Item Dashboard</Label>
                     </div>
 
@@ -87,7 +90,9 @@ console.log(userPermissions)
                         <Checkbox id="ck0-users_show"
                                   data-device="1"
                                   data-screen="users_show"
-                                  data={`${1},${userPermissions[1].per_sequence},${'users_show'},${userPermissions[1].user_id},${userPermissions[1].per_id},${userPermissions[1].level_id},${2}`}/>
+                                  data={` ${Object.keys(userPermissions).length !== 0 && userPermissions.constructor === Object ? (
+                                      `${1},${userPermissions[1].per_sequence},${'dashboard'},${userPermissions[1].user_id},${userPermissions[1].per_id},${userPermissions[1].level_id},${2}`
+                                  ):(``)}`}/>
                         <Label htmlFor="ck0-users_show" className="font-extrabold">Grant Access to the Button Add new user</Label>
                     </div>
 

@@ -111,7 +111,7 @@ export const FSetComboDefaultPermissions = (pDomObj, pPermissions) => {
  * @constructor
  */
 export const FGetSetAllComboPermissions = (pDomObj, pPermissions) => {
-
+console.log(pPermissions)
     /* Checking all the Permissions */
     pPermissions.forEach(function (permission, index){
 
