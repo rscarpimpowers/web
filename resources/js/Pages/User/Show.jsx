@@ -68,7 +68,7 @@ export default function Show({auth, userData, permissions }){
 
                     <CustomTable
                         auth={ auth }
-                        data={ userData.data }
+                        data={ userData }
                         permissions={ screenPermissions }
                         headerconfig ={{
                             headerItems: {

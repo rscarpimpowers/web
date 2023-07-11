@@ -31,6 +31,10 @@ export default function Add({ auth }){
     const [levels, setLevels]           = useState([]);
     const [companies, setCompanies]     = useState([]);
     const [permissions, setPermissions] = useState([]);
+    const [modules, setModules]         = useState([]);
+
+
+
 
     const { data, setData, patch, post, errors, processing, recentlySuccessful } = useForm({
         first_name      : '',
@@ -70,7 +74,7 @@ export default function Add({ auth }){
     const handleOnBlur = (e) => {
 
         e.preventDefault();
-
+console.log(e.target.value)
         /* Checking for a Value */
         if(!FIsEmpty(e.target.value)){
 
@@ -113,7 +117,9 @@ export default function Add({ auth }){
         if(!FIsEmpty(optionElementId)){
 
             /* Call the Api to Get all the Modules for the Selected Company. */
-            console.log(optionElementId)
+            axios({ method: "post", url: "/company-modules", data: {company_id: optionElementId}}).then((response) => {
+                setModules(response.data);
+            });
         }
     }
 
@@ -149,7 +155,7 @@ export default function Add({ auth }){
                     FUncheckCheckAllComboBoxes(1, document.getElementById('div-checkbox'));
 
                     /* Call the API to Retrieve the Default Permissions */
-                    axios({ method: "post", url: "/default-permissions", data: {lev_description: pValue}}).then((response) => {
+                    axios({ method: "post", url: "/default-permissions", data: {lev_description: pValue, module_id: modules}}).then((response) => {
                         console.log(response.data)
                         setPermissions(response.data)
                     });
@@ -230,7 +236,7 @@ export default function Add({ auth }){
                                                                     <Select
                                                                         id="companies"
                                                                         value={data.company}
-                                                                        onChange={(e) => handleOnChangeCompany(e)}
+                                                                        onChange={(e) => { handleOnChangeCompany(e); setData('company', e.target.value); }}
                                                                         required
                                                                     >
                                                                         <option></option>

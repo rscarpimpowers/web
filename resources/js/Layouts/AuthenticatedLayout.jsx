@@ -3,7 +3,7 @@ import {Link}                       from "@inertiajs/react";
 
 
 import SidebarLeft                  from "@/Layouts/Partials/SidebarLeft.jsx";
-import SidebarAdministratorLeft     from "@/Layouts/Partials/Administrator/SidebarAdministratorLeft.jsx";
+import SidebarAdministratorLeftssss     from "@/Layouts/Partials/Administrator/SidebarAdministratorLeftssss.jsx";
 
 import PowersLogo                   from "@/../../public/images/powers/powers-brand.svg";
 
@@ -41,7 +41,7 @@ export default function Authenticated({ user, children }) {
             /* Administrator */
             case 2:
 
-                return <SidebarAdministratorLeft></SidebarAdministratorLeft>
+                return <SidebarAdministratorLeftssss></SidebarAdministratorLeftssss>
         }
     }
 

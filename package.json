@@ -23,7 +23,9 @@
         "@inertiajs/inertia": "^0.11.1",
         "flowbite": "^1.6.6",
         "flowbite-react": "^0.4.9",
+        "intus": "^0.0.4",
         "react-icons": "^4.10.1",
+        "react-input-mask": "^3.0.0-alpha.2",
         "react-select": "^5.7.3",
         "sweetalert2": "^11.7.12"
     }

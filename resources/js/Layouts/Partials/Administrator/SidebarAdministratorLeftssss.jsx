@@ -3,7 +3,7 @@ import {Link}                                           from "@inertiajs/react";
 import {HiUserGroup}                                    from "react-icons/hi";
 import { HiOutlineUserPlus}                             from "react-icons/hi2"
 
-export default function SidebarAdministratorLeft(userLevel = null, userPermissions = null){
+export default function SidebarAdministratorLeftssss(userLevel = null, userPermissions = null){
 
     return(
         <Sidebar aria-label="Sidebar with multi-level dropdown example">

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\CompaniesController;
+use App\Http\Controllers\Auth\CompanyModulesController;
 use App\Http\Controllers\Auth\CompanyTypeController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\DevicesController;
@@ -14,6 +15,8 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\PermissionsDefaultController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\TimezoneController;
+use App\Http\Controllers\Auth\TitleController;
 use App\Http\Controllers\Auth\UserLevelsController;
 use App\Http\Controllers\Auth\UserPermissionsController;
 use App\Http\Controllers\Auth\UsersController;
@@ -73,6 +76,9 @@ Route::middleware('auth')->group(function () {
     // Company Types
     Route::post('company-types',                [CompanyTypeController::class,          'getAll']);
 
+    // Company Modules
+    Route::post('company-modules',              [CompanyModulesController::class,       'getAll']);
+
     // Permissions
     Route::post('permissions',                  [UserPermissionsController::class,  'show'])->name('permissions.show');
 
@@ -91,6 +97,15 @@ Route::middleware('auth')->group(function () {
     // Devices
     Route::post('devices',                      [DevicesController::class,         'showAll']);
 
+    // Timezone
+    Route::post('timezone',                     [TimezoneController::class,         'getAll']);
+
+    // CompanyTitle
+    Route::post('title',                        [TitleController::class,            'getAll']);
+    Route::get('titles-show',                   [TitleController::class,            'show'])->name('titles.show');
+    Route::get('title-update/{uuid}',           [TitleController::class,            'update'])->name('title.update');
+    Route::post('title-save',                   [TitleController::class,            'save'])->name('title.update.data');
+    Route::post('title-available',);
 });
 
 /*

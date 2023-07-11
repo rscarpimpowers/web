@@ -1,15 +1,15 @@
-import {Head, Link}                 from "@inertiajs/react";
-import AuthenticatedLayout          from '@/Layouts/AuthenticatedLayout.jsx';
-import CustomTable                  from "@/Components/CustomTable.jsx";
+import {Head, Link}                     from "@inertiajs/react";
+import AuthenticatedLayout              from '@/Layouts/AuthenticatedLayout.jsx';
+import CustomTable                      from "@/Components/CustomTable.jsx";
 
-export default function show({ auth, companiesData }){
+
+export default function Show({ auth, titlesData }){
 
     return(
         <AuthenticatedLayout
             user={auth.user}
         >
-            <Head title="User List" />
-
+            <Head title="Company Titles List" />
 
             <div className="space-y-6">
                 <div className="p-4 sm:p-8 bg-white dark:bg-gray-800">
@@ -22,9 +22,9 @@ export default function show({ auth, companiesData }){
                                 <div
                                     className="flex-row items-center justify-between p-4 space-y-3 sm:flex sm:space-y-0 sm:space-x-4">
                                     <div>
-                                        <h5 className="mr-3 font-semibold dark:text-white">Companies List</h5>
+                                        <h5 className="mr-3 font-semibold dark:text-white">Company Titles List</h5>
                                         <p className="text-gray-500 dark:text-gray-400">Manage all your existing
-                                            companies or add a new one</p>
+                                            company titles or add a new one</p>
                                     </div>
                                     <Link
                                         href={route('company.create')}
@@ -35,49 +35,47 @@ export default function show({ auth, companiesData }){
                                             <path strokeLinecap="round" strokeLinejoin="round"
                                                   d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/>
                                         </svg>
-                                        Add new company
+                                        Add new title
                                     </Link>
                                 </div>
                             </div>
                         </div>
                     </section>
-
                     <CustomTable
                         auth={ auth }
-                        data={ companiesData }
+                        data={ titlesData }
                         permissions={ [] }
                         headerconfig ={{
                             headerItems: {
                                 item0: {
-                                    title: 'Status',
-                                    class: 'flex items-center text-center justify-center'
-                                },
-                                item1: {
-                                    title: 'Company',
+                                    title: 'Title',
                                 },
                                 item2: {
+                                    title: 'Abbreviation'
+                                },
+                                item3: {
                                     title: ''
                                 },
-                                item3:{
+                                item4:{
                                     title:''
                                 },
                             },
                         }}
                         rowconfig={{
                             item0:{
-                                field: 'com_is_active',
-                                type: 'chk',
-                                class: 'flex items-center text-center justify-center'
+                                field: 'tit_description',
+                                type: 'r'
                             },
-                            item1:{
-                                field: 'com_name',
+
+                            items1: {
+                                field: 'tit_abbreviation',
                                 type: 'r'
                             },
 
                             item2:{
                                 type: 'btn',
                                 typeBtn: 'edit',
-                                route: 'user.update'
+                                route: `title.update`
                             },
                             item3:{
                                 type: 'btn',
@@ -93,6 +91,7 @@ export default function show({ auth, companiesData }){
                     </CustomTable>
                 </div>
             </div>
+
         </AuthenticatedLayout>
     )
 }

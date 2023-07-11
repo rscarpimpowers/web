@@ -22,8 +22,8 @@ class ModulesController extends Controller
 
     public function create(Request $request){
 
-        return Inertia::render('Modules/Partials/Add', [
-
-        ]);
+        return Inertia::render('Modules/Partials/Add', []);
     }
+
+
 }

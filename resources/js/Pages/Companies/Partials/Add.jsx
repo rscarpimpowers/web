@@ -1,10 +1,11 @@
 import {Head, Link, useForm}            from "@inertiajs/react";
-import {Breadcrumb, Button, Label, TextInput, Tooltip}
-                                        from "flowbite-react";
+import {Breadcrumb, Button, Label, Select, TextInput, Tooltip}
+    from "flowbite-react";
 
 import {HiOutlineListBullet}            from "react-icons/hi2";
 import AuthenticatedLayout              from '@/Layouts/AuthenticatedLayout.jsx';
 import {useEffect, useState}            from "react";
+import InputMask                        from "react-input-mask";
 
 
 
@@ -17,11 +18,22 @@ const options = [
 
 export default function Add({ auth }){
 
-    const [companyType, setCompanyType] = useState([]);
+    const [companyType, setCompanyType]     = useState([]);
+    const [timezone, setTimezone]           = useState([]);
+    const [title, setTitle]                 = useState([]);
+
 
     const { data, setData, post, errors, processing, recentlySuccessful } = useForm({
         company_type        : '',
-        com_name            : ''
+        com_name            : '',
+        address             : '',
+        address2            : '',
+        city                : '',
+        state               : '',
+        zip                 : '',
+        timezone            : '',
+        phone               : '',
+        email               : '',
     });
 
 
@@ -31,16 +43,24 @@ export default function Add({ auth }){
         /* Api to get all the Company Types, Headquarters, Branch, etc */
         axios({ method: "post", url: "/company-types" }).then(function (response){ setCompanyType(response.data) })
 
+        /* Api to get All the Timezone. */
+        axios({ method: "post", url: "/timezone"}).then(function (response){ setTimezone(response.data) });
 
+        /* Api to get All the CompanyTitle */
+        axios({ method: "post", url: "/title"}).then(function (response) { setTitle(response.data) });
     }, [])
 
 
-
+    /**
+     * Name         : submit
+     * Objective    : Form Submit
+     * Developer    : Ricardo Scarpim
+     *
+     * @param e
+     */
     const submit = (e) => {
 
         e.preventDefault();
-
-
 
     }
 
@@ -94,6 +114,7 @@ export default function Add({ auth }){
                                                     </p>
                                                 </div>
                                                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:col-span-2 lg:gap-8">
+
                                                     <div className="col-span-2">
 
                                                         {/* Company Name */}
@@ -115,130 +136,261 @@ export default function Add({ auth }){
                                                             />
                                                         </div>
 
+                                                        <div className="grid grid-cols-2 gap-4 mt-2">
+
+                                                            {/* Address */}
+                                                            <div>
+                                                                <div className="mb-1 block">
+                                                                    <Label
+                                                                        htmlFor="address"
+                                                                        value="Address"
+                                                                    />
+                                                                </div>
+                                                                <TextInput
+                                                                    id="address"
+                                                                    placeholder="Enter the Company Address"
+                                                                    required
+                                                                    type="text"
+                                                                    value={data.address}
+                                                                    onChange={(e) => setData('address', e.target.value)}
+                                                                />
+                                                            </div>
+
+                                                            {/* Address 2*/}
+                                                            <div>
+                                                                <div className="mb-1 block">
+                                                                    <Label
+                                                                        htmlFor="address2"
+                                                                        value="Address 2"
+                                                                    />
+                                                                </div>
+                                                                <TextInput
+                                                                    id="address2"
+                                                                    placeholder="Apartment, suite, etc.(optional)"
+                                                                    required
+                                                                    type="text"
+                                                                    value={data.address2}
+                                                                    onChange={(e) => setData('address2', e.target.value)}
+                                                                />
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="grid grid-cols-3 gap-4 mt-2">
+
+                                                            {/* City */}
+                                                            <div>
+                                                                <div className="mb-1 block">
+                                                                    <Label
+                                                                        htmlFor="city"
+                                                                        value="City"
+                                                                    />
+                                                                </div>
+                                                                <TextInput
+                                                                    id="city"
+                                                                    placeholder="City"
+                                                                    required
+                                                                    type="text"
+                                                                    value={data.city}
+                                                                    onChange={(e) => setData('city', e.target.value)}
+                                                                />
+                                                            </div>
+
+                                                            {/* State */}
+                                                            <div>
+                                                                <div className="mb-1 block">
+                                                                    <Label
+                                                                        htmlFor="state"
+                                                                        value="State"
+                                                                    />
+                                                                </div>
+                                                                <TextInput
+                                                                    id="state"
+                                                                    placeholder="State"
+                                                                    required
+                                                                    type="text"
+                                                                    value={data.state}
+                                                                    onChange={(e) => setData('state', e.target.value)}
+                                                                />
+                                                            </div>
+
+                                                            {/* ZipCode */}
+                                                            <div>
+                                                                <div className="mb-1 block">
+                                                                    <Label
+                                                                        htmlFor="zipcode"
+                                                                        value="Zip/Postal"
+                                                                    />
+                                                                </div>
+                                                                <TextInput
+                                                                    id="zip"
+                                                                    placeholder="Zip/Postal"
+                                                                    required
+                                                                    type="text"
+                                                                    value={data.zip}
+                                                                    onChange={(e) => setData('zip', e.target.value)}
+                                                                />
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="mb-2 mt-2">
+                                                            <div
+                                                                className="max-w-md"
+                                                                id="select"
+                                                            >
+                                                                <div className="mb-2 block">
+                                                                    <Label
+                                                                        htmlFor="timezone"
+                                                                        value="Select the Timezone"
+                                                                    />
+                                                                </div>
+                                                                <Select
+                                                                    id="timezone"
+                                                                    value={data.timezone}
+                                                                    onChange={(e) => {setData('timezone', e.target.value); }}
+                                                                    required
+                                                                >
+                                                                    <option></option>
+                                                                    {/* Iterate all the Timezone */}
+                                                                    {timezone.map((items, key) => {
+                                                                        return <option
+                                                                            id={items.tim_id}
+                                                                            key={key}
+                                                                        >{items.tim_description}</option>
+                                                                    })}
+                                                                </Select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="grid grid-cols-2 gap-4 mt-2">
+
+                                                            {/* Phone */}
+                                                            <div>
+                                                                <div className="mb-1 block">
+                                                                    <Label
+                                                                        htmlFor="phone"
+                                                                        value="Phone Number"
+                                                                    />
+                                                                </div>
+                                                                <InputMask
+                                                                    className="block w-full border disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border-gray-300 text-gray-900 focus:border-cyan-500 focus:ring-cyan-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-cyan-500 dark:focus:ring-cyan-500 rounded-lg p-2.5 text-sm"
+                                                                    mask="(999)999-9999"
+                                                                    id="address"
+                                                                    placeholder="Phone Number"
+                                                                    required
+                                                                    type="text"
+                                                                    value={data.phone}
+                                                                    onChange={(e) => setData('phone', e.target.value)}
+                                                                />
+                                                            </div>
+                                                        </div>
+
+
+                                                        {/* Company Email */}
+                                                        <div className="mt-2">
+                                                            <div className="mb-1 block">
+                                                                <Label
+                                                                    htmlFor="com_email"
+                                                                    value="Email"
+                                                                />
+                                                            </div>
+                                                            <TextInput
+                                                                id="com_email"
+                                                                placeholder="Enter the Company Email"
+                                                                type="text"
+                                                                value={data.com_email}
+                                                                onChange={(e) => setData('com_email', e.target.value)}
+                                                            />
+                                                        </div>
 
 
 
 
-
-
-
-
-                                                        {/*<div className="grid grid-cols-2 gap-4">*/}
-
-                                                        {/*    /!* First Name*!/*/}
-                                                        {/*    <div>*/}
-                                                        {/*        <div className="mb-1 block">*/}
-                                                        {/*            <Label*/}
-                                                        {/*                htmlFor="first_name"*/}
-                                                        {/*                value="First Name"*/}
-                                                        {/*            />*/}
-                                                        {/*        </div>*/}
-                                                        {/*        <TextInput*/}
-                                                        {/*            id="first_name"*/}
-                                                        {/*            placeholder="Enter the First Name"*/}
-                                                        {/*            required*/}
-                                                        {/*            type="text"*/}
-                                                        {/*            value={data.first_name}*/}
-                                                        {/*            onChange={(e) => setData('first_name', e.target.value)}*/}
-                                                        {/*        />*/}
-                                                        {/*    </div>*/}
-
-
-                                                        {/*    /!* Last Name*!/*/}
-                                                        {/*    <div>*/}
-                                                        {/*        <div className="mb-1 block">*/}
-                                                        {/*            <Label*/}
-                                                        {/*                htmlFor="last_name"*/}
-                                                        {/*                value="Last Name"*/}
-                                                        {/*            />*/}
-                                                        {/*        </div>*/}
-                                                        {/*        <TextInput*/}
-                                                        {/*            id="last_name"*/}
-                                                        {/*            placeholder="Enter the Last Name"*/}
-                                                        {/*            required*/}
-                                                        {/*            type="text"*/}
-                                                        {/*            value={data.last_name}*/}
-                                                        {/*            onChange={(e) => setData('last_name', e.target.value)}*/}
-                                                        {/*        />*/}
-                                                        {/*    </div>*/}
-                                                        {/*</div>*/}
-
-                                                        {/*/!* Email *!/*/}
-                                                        {/*<div className="mt-2">*/}
-                                                        {/*    <div className="mb-1 block">*/}
-                                                        {/*        <Label*/}
-                                                        {/*            htmlFor="email1"*/}
-                                                        {/*            value="E-mail"*/}
-                                                        {/*        />*/}
-                                                        {/*    </div>*/}
-                                                        {/*    <TextInput*/}
-                                                        {/*        id="email1"*/}
-                                                        {/*        placeholder="name@flowbite.com"*/}
-                                                        {/*        required*/}
-                                                        {/*        type="email"*/}
-                                                        {/*        value={data.email}*/}
-                                                        {/*        onChange={(e) => setData('email', e.target.value)}*/}
-                                                        {/*        onKeyDown={(e) => { setEmailDirty({email: data.email, dirty: true})}}*/}
-                                                        {/*        onBlur={ handleOnBlur }*/}
-                                                        {/*    />*/}
-                                                        {/*</div>*/}
-
-                                                        {/*<div className="grid grid-cols-2 gap-4 mt-2">*/}
-
-                                                        {/*    /!*  Select Language   *!/*/}
-                                                        {/*    <div className="">*/}
-                                                        {/*        <div*/}
-                                                        {/*            className="max-w-md"*/}
-                                                        {/*            id="select"*/}
-                                                        {/*        >*/}
-                                                        {/*            <div className="mb-2 block">*/}
-                                                        {/*                <Label*/}
-                                                        {/*                    htmlFor="languages"*/}
-                                                        {/*                    value="Select the User Language"*/}
-                                                        {/*                />*/}
-                                                        {/*            </div>*/}
-                                                        {/*            <Select*/}
-                                                        {/*                id="languages"*/}
-                                                        {/*                value={data.language}*/}
-                                                        {/*                onChange={(e) => setData('language', e.target.value)}*/}
-                                                        {/*                required*/}
-                                                        {/*            >*/}
-                                                        {/*                <option></option>*/}
-                                                        {/*                /!* Iterate all the Languages *!/*/}
-                                                        {/*                {languages.map((items, key) => {*/}
-                                                        {/*                    return <option*/}
-                                                        {/*                        id={items.lan_id}*/}
-                                                        {/*                        key={key}*/}
-                                                        {/*                    >{items.lan_description}</option>*/}
-                                                        {/*                })}*/}
-                                                        {/*            </Select>*/}
-                                                        {/*        </div>*/}
-                                                        {/*    </div>*/}
-
-                                                        {/*    /!* Setting the Status   *!/*/}
-                                                        {/*    <div className="mt-4">*/}
-                                                        {/*        <div className="flex items-center gap-2 mt-2">*/}
-                                                        {/*            <Checkbox*/}
-                                                        {/*                value={ data.isActive }*/}
-                                                        {/*                defaultChecked={ data.isActive === 1 }*/}
-                                                        {/*                onChange={(e) => setData('isActive', e.target.value)}*/}
-                                                        {/*                id="is_active"*/}
-                                                        {/*            />*/}
-                                                        {/*            <Label htmlFor="promotion">*/}
-                                                        {/*                Is Active*/}
-                                                        {/*            </Label>*/}
-                                                        {/*        </div>*/}
-                                                        {/*    </div>*/}
-                                                        {/*</div>*/}
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="mx-auto divide-y mt-2">
+                                <div className="mx-auto mt-2">
                                     <hr
-                                        className="my-12 h-0.5 border-t-0 bg-neutral-100 opacity-100 dark:opacity-50"/>
+                                        className=" h-0.5 border-t-0 bg-neutral-100 opacity-100 dark:opacity-50"/>
+                                </div>
+
+
+                                <div className="py-24 sm:py-8 divide-y">
+                                    <div className=" max-w-7xl px-6 lg:px-1">
+                                        <div className="mx-auto max-w-2xl space-y-16 divide-y lg:mx-0 lg:max-w-none">
+                                            <div className="grid grid-cols-1 gap-x-4 gap-y-6 lg:grid-cols-3">
+                                                <div>
+                                                    <h2 className="text-3xl font-bold tracking-tight text-gray-900">Company Contact Info</h2>
+                                                    <p className="mt-4 leading-7 text-gray-600">
+                                                        Add company contact information
+                                                    </p>
+                                                </div>
+                                                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:col-span-2 lg:gap-8">
+
+                                                    <div className="col-span-2">
+
+                                                        <div className="mb-2 mt-2">
+                                                            <div
+                                                                className="max-w-md"
+                                                                id="select"
+                                                            >
+                                                                <div className="mb-2 block">
+                                                                    <Label
+                                                                        htmlFor="com_title"
+                                                                        value="Select the Title"
+                                                                    />
+                                                                </div>
+                                                                <Select
+                                                                    id="com_title"
+                                                                    value={data.com_title}
+                                                                    onChange={(e) => {setData('com_title', e.target.value); }}
+                                                                >
+                                                                    <option></option>
+                                                                    {/* Iterate all the Timezone */}
+                                                                    {title.map((items, key) => {
+                                                                        return <option
+                                                                            id={items.tit_id}
+                                                                            key={key}
+                                                                        >{items.tit_description}</option>
+                                                                    })}
+                                                                </Select>
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Company Contact Name */}
+                                                        <div className="mt-2">
+                                                            <div className="mb-1 block">
+                                                                <Label
+                                                                    htmlFor="com_contact_name"
+                                                                    value="Contact Name"
+                                                                />
+                                                            </div>
+                                                            <TextInput
+                                                                id="com_contact_name"
+                                                                placeholder="Enter the Company Contact Name"
+                                                                type="text"
+                                                                value={data.com_contact_name}
+                                                                onChange={(e) => setData('com_contact_name', e.target.value)}
+                                                            />
+                                                        </div>
+                                                    </div>
+
+
+
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="mx-auto mt-2">
+                                    <hr
+                                        className="h-0.5 border-t-0 bg-neutral-100 opacity-100 dark:opacity-50"/>
                                 </div>
 
                                 <div className="py-24 sm:py-8 divide-y">
@@ -256,7 +408,6 @@ export default function Add({ auth }){
                                         </div>
                                     </div>
                                 </div>
-
                             </form>
                         </div>
                     </section>

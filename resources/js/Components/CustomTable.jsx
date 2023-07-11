@@ -1,10 +1,13 @@
 
+import {useState}                       from "react";
 import {Link}                           from "@inertiajs/react";
-import {Badge, Button, Table}           from "flowbite-react";
+import {Badge, Button, Pagination, Table}
+                                        from "flowbite-react";
 import Swal                             from "sweetalert2";
 
 import {HiBan, HiCheck, HiOutlineTrash} from "react-icons/hi";
 import {HiOutlinePencilSquare}          from "react-icons/hi2";
+
 
 
 
@@ -38,9 +41,12 @@ const handleDelete = (e) => {
 
 
 export default function CustomTable({...props}){
+    const [currentPage, setCurrentPage] = useState();
+    console.log(props.data)
     return(
 
-        <Table striped {...props}>
+        <div>
+            <Table striped {...props}>
 
             <Table.Head>
 
@@ -53,7 +59,7 @@ export default function CustomTable({...props}){
             <Table.Body className="divide-y">
 
                 {/*  Iterates the Data from the Database.   */}
-                { props.data.map((items, i) => {
+                { props.data.data.map((items, i) => {
 
                     return <Table.Row key={i} className="bg-red-700 dark:border-gray-700 dark:bg-gray-800">
 
@@ -130,5 +136,7 @@ export default function CustomTable({...props}){
                 })}
             </Table.Body>
         </Table>
+            <Pagination className="float-right mt-2" currentPage={props.data.current_page} onPageChange={page => setCurrentPage(page)} totalPages={props.data.total}/>
+        </div>
     )
 }

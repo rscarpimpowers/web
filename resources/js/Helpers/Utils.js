@@ -145,7 +145,7 @@ export const FSavePermissions = () => {
 
     document.querySelectorAll('[role="tabpanel"]').forEach(function (el, i){
 
-        /* Getting all Tabs to Check if is a Tab Title Such Website, etc */
+        /* Getting all Tabs to Check if is a Tab CompanyTitle Such Website, etc */
         let vDOMTabElement = el.getAttribute('id').substring(1, 3)
 
         /* Avoiding the Tabs Website, Phone Devices, etc. */

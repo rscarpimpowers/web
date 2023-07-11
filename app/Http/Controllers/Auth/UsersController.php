@@ -21,7 +21,7 @@ class UsersController extends Controller
         ->orderBy('level_id')
         ->orderBy('name')
 
-        ->simplePaginate(5);
+        ->paginate(2);
 
 
         return Inertia::render('User/Show', [

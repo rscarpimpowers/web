@@ -96,6 +96,11 @@ export default function Edit({auth, userData, permissions, userPermissions }){
     }
 
 
+    if(!userData){
+        return(
+            <h2>No user's Data</h2>
+        )
+    }
 
 
     return(
