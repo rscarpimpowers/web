@@ -1,9 +1,9 @@
 import {Sidebar}                                        from "flowbite-react";
 import {Link}                                           from "@inertiajs/react";
-import {HiUserGroup}                                    from "react-icons/hi";
-import {HiOutlineUserPlus}                              from "react-icons/hi2";
+import {HiOutlineCollection, HiTrendingUp, HiUserGroup, HiViewList}
+    from "react-icons/hi";
 import {MdOutlineViewModule}                            from "react-icons/md";
-import {IoMdClipboard} from "react-icons/io";
+import {IoMdClipboard}                                  from "react-icons/io";
 
 
 export default function SidebarLeft(userLevel = null, userPermissions = null){
@@ -46,34 +46,77 @@ export default function SidebarLeft(userLevel = null, userPermissions = null){
                         </p>
                     </Sidebar.Collapse>
 
+
+                    <div>
+
+                        <Sidebar.Collapse icon={HiViewList} label="Modules">
+
+                            <div className="ml-2">
+
+                                {/* Modules Collapse */}
+                                <Sidebar.Collapse icon={HiOutlineCollection} className="text-sm" label="Culture Performance">
+
+                                    <div>
+
+                                        <p className="ml-8 flex items-center">
+
+                                            <svg className="w-3.5 h-3.5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                 strokeWidth="1.5" stroke="currentColor" >
+                                                <path strokeLinecap="round" strokeLinejoin="round"
+                                                      d="M3 4.5h14.25M3 9h9.75M3 13.5h5.25m5.25-.75L17.25 9m0 0L21 12.75M17.25 9v12"/>
+                                            </svg>
+
+                                            <Link href={route('modules.values.index')} className="text-sm">Values</Link>
+                                        </p>
+                                    </div>
+
+                                    <div>
+
+                                        <p className="ml-8 flex items-center">
+                                            <svg className="w-3.5 h-3.5 flex-none mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                 strokeWidth="1.5" stroke="currentColor" >
+                                                <path strokeLinecap="round" strokeLinejoin="round"
+                                                      d="M3 4.5h14.25M3 9h9.75M3 13.5h5.25m5.25-.75L17.25 9m0 0L21 12.75M17.25 9v12"/>
+                                            </svg>
+
+
+                                            <Link href={route('modules.behaviors.index')} className="text-sm">Behaviors</Link>
+                                        </p>
+                                    </div>
+                                </Sidebar.Collapse>
+                            </div>
+                        </Sidebar.Collapse>
+                    </div>
+
+
                     {/* Modules Collapse */}
-                    <Sidebar.Collapse icon={MdOutlineViewModule} label="Modules">
+                    {/*<Sidebar.Collapse icon={MdOutlineViewModule} label="Modules">*/}
 
 
-                        <p className="ml-8 flex items-center">
-                            <svg className="w-6 h-6 flex-none mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
-                                 stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round"
-                                      d="M7.875 14.25l1.214 1.942a2.25 2.25 0 001.908 1.058h2.006c.776 0 1.497-.4 1.908-1.058l1.214-1.942M2.41 9h4.636a2.25 2.25 0 011.872 1.002l.164.246a2.25 2.25 0 001.872 1.002h2.092a2.25 2.25 0 001.872-1.002l.164-.246A2.25 2.25 0 0116.954 9h4.636M2.41 9a2.25 2.25 0 00-.16.832V12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 12V9.832c0-.287-.055-.57-.16-.832M2.41 9a2.25 2.25 0 01.382-.632l3.285-3.832a2.25 2.25 0 011.708-.786h8.43c.657 0 1.281.287 1.709.786l3.284 3.832c.163.19.291.404.382.632M4.5 20.25h15A2.25 2.25 0 0021.75 18v-2.625c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125V18a2.25 2.25 0 002.25 2.25z"/>
-                            </svg>
+                    {/*    <p className="ml-8 flex items-center">*/}
+                    {/*        <svg className="w-6 h-6 flex-none mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"*/}
+                    {/*             stroke="currentColor">*/}
+                    {/*            <path strokeLinecap="round" strokeLinejoin="round"*/}
+                    {/*                  d="M7.875 14.25l1.214 1.942a2.25 2.25 0 001.908 1.058h2.006c.776 0 1.497-.4 1.908-1.058l1.214-1.942M2.41 9h4.636a2.25 2.25 0 011.872 1.002l.164.246a2.25 2.25 0 001.872 1.002h2.092a2.25 2.25 0 001.872-1.002l.164-.246A2.25 2.25 0 0116.954 9h4.636M2.41 9a2.25 2.25 0 00-.16.832V12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 12V9.832c0-.287-.055-.57-.16-.832M2.41 9a2.25 2.25 0 01.382-.632l3.285-3.832a2.25 2.25 0 011.708-.786h8.43c.657 0 1.281.287 1.709.786l3.284 3.832c.163.19.291.404.382.632M4.5 20.25h15A2.25 2.25 0 0021.75 18v-2.625c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125V18a2.25 2.25 0 002.25 2.25z"/>*/}
+                    {/*        </svg>*/}
 
 
-                            <Link href={route('modules.show')}>View All Modules</Link>
-                        </p>
+                    {/*        <Link href={route('modules.show')}>View All Modules</Link>*/}
+                    {/*    </p>*/}
 
 
 
-                        <p className="ml-8 flex items-center">
-                            <svg className="w-6 h-6 flex-none mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
-                                 stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round"
-                                      d="M9 3.75H6.912a2.25 2.25 0 00-2.15 1.588L2.35 13.177a2.25 2.25 0 00-.1.661V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.15-1.588H15M2.25 13.5h3.86a2.25 2.25 0 012.012 1.244l.256.512a2.25 2.25 0 002.013 1.244h3.218a2.25 2.25 0 002.013-1.244l.256-.512a2.25 2.25 0 012.013-1.244h3.859M12 3v8.25m0 0l-3-3m3 3l3-3"/>
-                            </svg>
+                    {/*    <p className="ml-8 flex items-center">*/}
+                    {/*        <svg className="w-6 h-6 flex-none mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"*/}
+                    {/*             stroke="currentColor">*/}
+                    {/*            <path strokeLinecap="round" strokeLinejoin="round"*/}
+                    {/*                  d="M9 3.75H6.912a2.25 2.25 0 00-2.15 1.588L2.35 13.177a2.25 2.25 0 00-.1.661V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.15-1.588H15M2.25 13.5h3.86a2.25 2.25 0 012.012 1.244l.256.512a2.25 2.25 0 002.013 1.244h3.218a2.25 2.25 0 002.013-1.244l.256-.512a2.25 2.25 0 012.013-1.244h3.859M12 3v8.25m0 0l-3-3m3 3l3-3"/>*/}
+                    {/*        </svg>*/}
 
 
-                            <Link href={route('module.create')}>Add New Module</Link>
-                        </p>
-                    </Sidebar.Collapse>
+                    {/*        <Link href={route('module.create')}>Add New Module</Link>*/}
+                    {/*    </p>*/}
+                    {/*</Sidebar.Collapse>*/}
 
                     {/* Companies */}
                     <Sidebar.Collapse icon={IoMdClipboard} label="Companies">
@@ -94,7 +137,7 @@ export default function SidebarLeft(userLevel = null, userPermissions = null){
                                 <path strokeLinecap="round" strokeLinejoin="round"
                                       d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"/>
                             </svg>
-                            <Link href={route('titles.show')}>View All Titles</Link>
+                            <Link href={route('company.title.index')}>View All Titles</Link>
                         </p>
                     </Sidebar.Collapse>
 

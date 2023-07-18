@@ -27,7 +27,7 @@ export default function Show({ auth, titlesData }){
                                             company titles or add a new one</p>
                                     </div>
                                     <Link
-                                        href={route('company.create')}
+                                        href={route('company.title.create')}
                                         className="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-blue-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
                                     >
                                         <svg className="w-3.5 h-3.5 mr-2 -ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
@@ -50,13 +50,16 @@ export default function Show({ auth, titlesData }){
                                 item0: {
                                     title: 'Title',
                                 },
-                                item2: {
+
+                                item1: {
                                     title: 'Abbreviation'
                                 },
-                                item3: {
+
+                                item2: {
                                     title: ''
                                 },
-                                item4:{
+
+                                item3:{
                                     title:''
                                 },
                             },
@@ -67,7 +70,7 @@ export default function Show({ auth, titlesData }){
                                 type: 'r'
                             },
 
-                            items1: {
+                            item1: {
                                 field: 'tit_abbreviation',
                                 type: 'r'
                             },
@@ -75,15 +78,17 @@ export default function Show({ auth, titlesData }){
                             item2:{
                                 type: 'btn',
                                 typeBtn: 'edit',
-                                route: `title.update`
+                                route: `company.title.edit`
                             },
+
                             item3:{
                                 type: 'btn',
                                 typeBtn: 'delete',
-                                route: 'user.update',
-                                textConfirm: "You won't be able to revert this process.<br/>The User will be Permanently Deleted!",
+                                route: '/title/',
+                                textConfirm: "You won't be able to revert this process.<br/>The <span class='font-extrabold'>Company Tittle</span> will be Permanently Deleted!",
                                 textBtnConfirmation: 'Proceed',
-                                fieldToDelete: 'uuid'
+                                fieldToDelete: 'uuid',
+                                redirect: '/title'
                             },
                         }}
                     >

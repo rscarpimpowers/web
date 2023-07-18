@@ -59,7 +59,5 @@ class User extends Authenticatable
 
             $users->uuid        = Uuid::uuid4();
         });
-
-
     }
 }

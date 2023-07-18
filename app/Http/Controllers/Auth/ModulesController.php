@@ -12,7 +12,7 @@ class ModulesController extends Controller
     public function show(Request $request){
 
         $toModules = ViewModules::orderBy('mod_name')
-            ->get();
+            ->paginate(5);
 
         return Inertia::render('Modules/Show', [
             'modulesData' => $toModules

@@ -1,4 +1,4 @@
-
+import Swal from "sweetalert2";
 
 
 /**
@@ -237,6 +237,34 @@ export const FReturnPermissionsObject = (pPermissions, pDomElements, pElementDat
 
     /* Calling the API to Save the Information */
     axios({method: "post", url: "/permissions", data: vPermissionsObj}).then((res) => { console.log(res)})
+}
+
+
+/**
+ * Name         : FCustomToast
+ * Objective    :
+ *
+ * @param pTitle
+ * @constructor
+ */
+export const FCustomToast = (pTitle) => {
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+
+    Toast.fire({
+        icon: 'success',
+        title: pTitle
+    })
 }
 
 

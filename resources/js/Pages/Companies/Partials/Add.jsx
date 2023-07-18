@@ -9,12 +9,6 @@ import InputMask                        from "react-input-mask";
 
 
 
-const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' }
-]
-
 
 export default function Add({ auth }){
 
@@ -47,7 +41,7 @@ export default function Add({ auth }){
         axios({ method: "post", url: "/timezone"}).then(function (response){ setTimezone(response.data) });
 
         /* Api to get All the CompanyTitle */
-        axios({ method: "post", url: "/title"}).then(function (response) { setTitle(response.data) });
+        axios({ method: "post", url: "/title/all"}).then(function (response) { setTitle(response.data) });
     }, [])
 
 
@@ -69,7 +63,6 @@ export default function Add({ auth }){
     return(
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Company</h2>}
         >
             <Head title="Add Company" />
 
@@ -130,6 +123,7 @@ export default function Add({ auth }){
                                                                 placeholder="Enter the Company Name"
                                                                 required
                                                                 autoFocus
+                                                                sizing="sm"
                                                                 type="text"
                                                                 value={data.com_name}
                                                                 onChange={(e) => setData('com_name', e.target.value)}
@@ -150,6 +144,7 @@ export default function Add({ auth }){
                                                                     id="address"
                                                                     placeholder="Enter the Company Address"
                                                                     required
+                                                                    sizing="sm"
                                                                     type="text"
                                                                     value={data.address}
                                                                     onChange={(e) => setData('address', e.target.value)}
@@ -168,6 +163,7 @@ export default function Add({ auth }){
                                                                     id="address2"
                                                                     placeholder="Apartment, suite, etc.(optional)"
                                                                     required
+                                                                    sizing="sm"
                                                                     type="text"
                                                                     value={data.address2}
                                                                     onChange={(e) => setData('address2', e.target.value)}
@@ -189,6 +185,7 @@ export default function Add({ auth }){
                                                                     id="city"
                                                                     placeholder="City"
                                                                     required
+                                                                    sizing="sm"
                                                                     type="text"
                                                                     value={data.city}
                                                                     onChange={(e) => setData('city', e.target.value)}
@@ -207,6 +204,7 @@ export default function Add({ auth }){
                                                                     id="state"
                                                                     placeholder="State"
                                                                     required
+                                                                    sizing="sm"
                                                                     type="text"
                                                                     value={data.state}
                                                                     onChange={(e) => setData('state', e.target.value)}
@@ -225,6 +223,7 @@ export default function Add({ auth }){
                                                                     id="zip"
                                                                     placeholder="Zip/Postal"
                                                                     required
+                                                                    sizing="sm"
                                                                     type="text"
                                                                     value={data.zip}
                                                                     onChange={(e) => setData('zip', e.target.value)}
@@ -245,6 +244,7 @@ export default function Add({ auth }){
                                                                 </div>
                                                                 <Select
                                                                     id="timezone"
+                                                                    sizing="sm"
                                                                     value={data.timezone}
                                                                     onChange={(e) => {setData('timezone', e.target.value); }}
                                                                     required
@@ -272,11 +272,12 @@ export default function Add({ auth }){
                                                                     />
                                                                 </div>
                                                                 <InputMask
-                                                                    className="block w-full border disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border-gray-300 text-gray-900 focus:border-cyan-500 focus:ring-cyan-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-cyan-500 dark:focus:ring-cyan-500 rounded-lg p-2.5 text-sm"
+                                                                    className="block w-full border disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border-gray-300 text-gray-900 focus:border-cyan-500 focus:ring-cyan-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-cyan-500 dark:focus:ring-cyan-500 rounded-lg p-2.5 sm:text-xs"
                                                                     mask="(999)999-9999"
                                                                     id="address"
                                                                     placeholder="Phone Number"
                                                                     required
+                                                                    sizing="sm"
                                                                     type="text"
                                                                     value={data.phone}
                                                                     onChange={(e) => setData('phone', e.target.value)}
@@ -296,6 +297,7 @@ export default function Add({ auth }){
                                                             <TextInput
                                                                 id="com_email"
                                                                 placeholder="Enter the Company Email"
+                                                                sizing="sm"
                                                                 type="text"
                                                                 value={data.com_email}
                                                                 onChange={(e) => setData('com_email', e.target.value)}
@@ -344,6 +346,7 @@ export default function Add({ auth }){
                                                                 </div>
                                                                 <Select
                                                                     id="com_title"
+                                                                    sizing="sm"
                                                                     value={data.com_title}
                                                                     onChange={(e) => {setData('com_title', e.target.value); }}
                                                                 >
@@ -370,6 +373,7 @@ export default function Add({ auth }){
                                                             <TextInput
                                                                 id="com_contact_name"
                                                                 placeholder="Enter the Company Contact Name"
+                                                                sizing="sm"
                                                                 type="text"
                                                                 value={data.com_contact_name}
                                                                 onChange={(e) => setData('com_contact_name', e.target.value)}

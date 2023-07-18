@@ -15,7 +15,7 @@ class CompaniesController extends Controller
 
     public function show(Request $request){
 
-        $toCompanies = ViewCompanies::orderBy('com_name')->get();
+        $toCompanies = ViewCompanies::orderBy('com_name')->paginate(2);
 
         return Inertia::render('Companies/Show', [
             'companiesData'   => $toCompanies

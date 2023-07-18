@@ -3,7 +3,7 @@ import AuthenticatedLayout          from '@/Layouts/AuthenticatedLayout.jsx';
 import CustomTable                  from "@/Components/CustomTable.jsx";
 
 export default function show({ auth, companiesData }){
-
+console.log(companiesData.data)
     return(
         <AuthenticatedLayout
             user={auth.user}

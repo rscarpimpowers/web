@@ -1,48 +1,47 @@
 
 import {useState}                       from "react";
-import {Link}                           from "@inertiajs/react";
+import {Link, useForm} from "@inertiajs/react";
 import {Badge, Button, Pagination, Table}
                                         from "flowbite-react";
 import Swal                             from "sweetalert2";
 
 import {HiBan, HiCheck, HiOutlineTrash} from "react-icons/hi";
 import {HiOutlinePencilSquare}          from "react-icons/hi2";
+import {FIsEmpty} from "@/Helpers/Utils.js";
 
 
-
-
-
-const handleDelete = (e) => {
-
-    e.preventDefault();
-
-    Swal.fire({
-        title: 'Are you sure?',
-        html: vText,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: vConfirmBtn
-    }).then((result) => {
-        if (result.isConfirmed) {
-
-            /* Call Api Route to Delete the Data. */
-
-
-            Swal.fire(
-                'Deleted!',
-                'Deleted Successfully',
-                'success'
-            )
-        }
-    })
-}
 
 
 export default function CustomTable({...props}){
+
     const [currentPage, setCurrentPage] = useState();
-    console.log(props.data)
+
+    const handleDelete = (pUuid) => {
+
+        Swal.fire({
+            title: 'Are you sure?',
+            html: props.rowconfig['item3']['textConfirm'],
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: props.rowconfig['item3']['textBtnConfirmation']
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+
+                /* Call Api Route to Delete the Data. */
+                axios({method: "post", url: props.rowconfig['item3']['route'] + '{id}/destroy', data: { uuid: pUuid }})
+                    .then((res) => {
+
+                        /* Reload the Screen. */
+                        if(!FIsEmpty(props.rowconfig['item3']['redirect']))
+                            window.location.replace(props.rowconfig['item3']['redirect'])
+                    })
+            }
+        })
+    }
+
     return(
 
         <div>
@@ -121,13 +120,13 @@ export default function CustomTable({...props}){
                                             return <Table.Cell key={item}
                                                 className={`w-24 ${props.rowconfig[key].class !== ""? props.rowconfig[key].class: ''}`}
                                             >
-                                                <Link href={route(`${props.rowconfig[key].route}`, `${items['uuid']}`)}>
-                                                    <Button color="failure" className="w-24 h-7">
+                                                <Button color="failure" className="w-24 h-7"
+                                                        id={items['uuid']}
+                                                        onClick={(e) => handleDelete( items['uuid']) }>
 
-                                                        <HiOutlineTrash className="mr-2 h-3.5 w-3.5" />
-                                                        Delete
-                                                    </Button>
-                                                </Link>
+                                                    <HiOutlineTrash className="mr-2 h-3.5 w-3.5" />
+                                                    Delete
+                                                </Button>
                                             </Table.Cell>
                                     }
                             }
@@ -136,7 +135,11 @@ export default function CustomTable({...props}){
                 })}
             </Table.Body>
         </Table>
-            <Pagination className="float-right mt-2" currentPage={props.data.current_page} onPageChange={page => setCurrentPage(page)} totalPages={props.data.total}/>
+            <Pagination
+                className="float-right mt-2"
+                currentPage={props.data.current_page}
+                onPageChange={page => setCurrentPage(page)}
+                totalPages={props.data.total}/>
         </div>
     )
 }

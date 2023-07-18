@@ -5,7 +5,7 @@ import CustomTable from "@/Components/CustomTable.jsx";
 
 
 export default function Show({auth, modulesData}){
-console.log(modulesData)
+
     return(
         <AuthenticatedLayout
             user={auth.user}

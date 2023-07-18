@@ -2,22 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Crypt;
 use Ramsey\Uuid\Uuid;
 
-class CompanyTitle extends Model
+class ModuleSections extends Model
 {
     use HasFactory;
 
-    protected $table    = "title";
+    protected $table    = "module_sections";
 
     public $timestamps  = true;
 
-    protected $fillable = ['tit_id', 'uuid', 'tit_description', 'tit_abbreviation', 'created_by', 'updated_by'];
+    protected $fillable =   ['sec_id', 'uuid', 'sec_sequence', 'mod_id', 'sec_name', 'sec_description', 'is_active', 'created_by', 'updated_by'];
 
     public static function boot()
     {
@@ -38,5 +36,4 @@ class CompanyTitle extends Model
             }
         });
     }
-
 }

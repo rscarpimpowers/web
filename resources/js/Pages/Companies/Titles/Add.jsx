@@ -1,26 +1,21 @@
-/**
- * Name         : Show - Titles List
- */
-
-
-
-import {Head, Link, useForm}            from "@inertiajs/react";
-import AuthenticatedLayout              from '@/Layouts/AuthenticatedLayout.jsx';
-
-import {HiOutlineListBullet}            from "react-icons/hi2";
-
+import {Head, Link, useForm, usePage}   from "@inertiajs/react";
 import {Breadcrumb, Label, TextInput, Tooltip}
                                         from "flowbite-react";
-import {FIsEmpty}                       from "@/Helpers/Utils.js";
+import {HiOutlineListBullet}            from "react-icons/hi2";
+import AuthenticatedLayout              from '@/Layouts/AuthenticatedLayout.jsx';
 import InputError                       from "@/Components/InputError.jsx";
 import intus                            from "intus";
 import {isRequired}                     from "intus/rules";
-import Swal                             from "sweetalert2";
+import {FIsEmpty}                       from "@/Helpers/Utils.js";
+import {useState} from "react";
 
 
 
+export default function Add({ auth }){
 
-export default function Edit({ auth, titleData }){
+    const { flash } = usePage().props;
+    const [isEnable, setIsEnable]   = useState(false);
+
 
     const {
         data,
@@ -30,103 +25,86 @@ export default function Edit({ auth, titleData }){
         clearErrors,
         setError,
         errors,
-        put,
+        post,
         processing,
         recentlySuccessful } = useForm({
-            tit_description         : titleData[0].tit_description,
-            tit_abbreviation        : titleData[0].tit_abbreviation,
-            uuid                    : titleData[0].uuid,
+        tit_description         : '',
+        tit_abbreviation        : ''
     });
 
 
-
-
-
     /**
-     * Saving the Data.
-     * Conclusion : Using the data passed as an parameter to send to the Api
+     * Name         : onSubmit
+     * Objective    : Save the new Data.
+     * Developer    : Ricardo Scarpim
+     * Date         : Jun/9/23
      * @param e
      */
-    const onSubmitForm = (e) => {
+    const onSubmit = (e) => {
 
         e.preventDefault();
 
         clearErrors();
 
         let validation = intus.validate(data, {
-            tit_description: [isRequired()]
+            tit_description     : [isRequired()],
+            tit_abbreviation    : [isRequired()],
         },{
-            "tit_description.isRequired": "Title Name is required."
+            "tit_description.isRequired"    : "Title Name is required.",
+            "tit_abbreviation.isRequired"   : "Tittle Abbreviation is required."
         });
 
 
         /* Calling the Api to save the Data. */
         if(validation.passes()){
-
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-            })
-
-            put(route('company.title.update', data.uuid), {
-                onSuccess: () => {
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Data has been saved successfully.'
-                    })
-                },
-            });
-
-
+            post(route('company.title.store'));
         }else {
             setError(validation.errors())
         }
+
+
     }
 
 
     /**
-     * Name         : handleOnBlurTitle
-     * Objective    : Call the Api to verify if Title is available
+     * Name         : handleBlur
+     * Objective    : Check the availability of the Title.
      * Developer    : Ricardo Scarpim
-     * Date         : Jul/10/23.
-     *
+     * Date         : Jun/11/23
      * @param e
      */
-    const handleOnBlurTitle = (e) => {
+    const handleOnBlur = (e) => {
 
         e.preventDefault();
 
-        /* Checking for a Valid Content. */
-        if(!FIsEmpty(e.target.value) && isDirty){
+        /* Checking for the Value entered */
+        if(!FIsEmpty(e.target.value)){
 
-            /* Calling the Api to check the availability of the Title Name. */
+            /* Checking if the Title is Available */
+            post(route('company.title.verify'), {
 
+                /* When Finalizing, work with the return variable. */
+                onSuccess: (res) => {
+
+                    /* Title has been taken already */
+                    if(!FIsEmpty(res.props.flash)){
+
+                        /* Disable the Save Button */
+                        setIsEnable(false)
+                    }else{
+                        setIsEnable(true)
+                    }
+                },
+            });
         }
     }
-
-
-
-
-
-
-
-
-
-
 
     return(
         <AuthenticatedLayout
             user={auth.user}
-        >
-            <Head title="Company Titles List" />
 
+        >
+            <Head title="Add Company Title" />
 
             <div className="space-y-6">
                 <div className="p-4 sm:p-8 bg-white dark:bg-gray-800">
@@ -140,9 +118,10 @@ export default function Edit({ auth, titleData }){
                             </p>
                         </Breadcrumb.Item>
                         <Breadcrumb.Item>
-                            Updating Title
+                            Creating Title
                         </Breadcrumb.Item>
                     </Breadcrumb>
+
 
                     <section className="bg-white dark:bg-gray-900">
                         <div className="mx-auto divide-y mt-2">
@@ -150,11 +129,11 @@ export default function Edit({ auth, titleData }){
                             <div className="grid grid-cols-4 gap-4">
 
                                 <div className="col-span-4">
-                                    <h2 className="mb-4 mt-4 text-3xl font-bold tracking-tight text-gray-900 float-right"><span className="text-red-500">Updating</span> an Existing Company Title</h2>
+                                    <h2 className="mb-4 mt-4 text-3xl font-bold tracking-tight text-gray-900 float-right"><span className="text-blue-500">Creating</span> a New Company Title</h2>
                                 </div>
                             </div>
 
-                            <form onSubmit={onSubmitForm} noValidate>
+                            <form onSubmit={onSubmit} noValidate>
 
                                 <div className="py-24 sm:py-8 divide-y">
                                     <div className=" max-w-7xl px-6 lg:px-1">
@@ -163,7 +142,7 @@ export default function Edit({ auth, titleData }){
                                                 <div>
                                                     <h2 className="text-3xl font-bold tracking-tight text-gray-900">Title Information</h2>
                                                     <p className="mt-4 leading-7 text-gray-600">
-                                                        Update an existing company title and title abbreviation.
+                                                        Set, Describe the Company Title Information.
                                                     </p>
                                                 </div>
                                                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:col-span-2 lg:gap-8">
@@ -183,11 +162,16 @@ export default function Edit({ auth, titleData }){
                                                                     id="tit_description"
                                                                     value={data.tit_description}
                                                                     type="text"
-                                                                    color={`${errors.tit_description ? 'failure': ''}`}
+                                                                    autoFocus
+                                                                    color={ `${errors.tit_description || flash.message ? 'failure': ''}`}
                                                                     onChange={(e) => { setData('tit_description', e.target.value)} }
-                                                                    onBlur={ handleOnBlurTitle }
+                                                                    onBlur={ handleOnBlur}
                                                                 />
-                                                                <InputError message={ errors.tit_description } className="mt-2" />
+                                                                <InputError  message={ errors.tit_description } className="mt-2 float-right" />
+
+                                                                {flash.message && (
+                                                                    <div className="text-sm text-red-600 dark:text-red-400 mt-2 float-right">{flash.message}</div>
+                                                                )}
                                                             </div>
                                                         </div>
 
@@ -205,10 +189,12 @@ export default function Edit({ auth, titleData }){
                                                                     id="tit_abbreviation"
                                                                     value={data.tit_abbreviation}
                                                                     type="text"
+                                                                    color={`${errors.tit_abbreviation ? 'failure': ''}`}
                                                                     onChange={(e) => { setData('tit_abbreviation', e.target.value) }}
+                                                                    onInput={(e) => e.target.value = ("" + e.target.value).toUpperCase()}
                                                                     placeholder="Enter the Title Abbreviation"
                                                                 />
-
+                                                                <InputError message={ errors.tit_abbreviation } className="mt-2 float-right" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -218,6 +204,7 @@ export default function Edit({ auth, titleData }){
                                     </div>
                                 </div>
 
+
                                 <div className="mx-auto divide-y mt-2">
                                     <hr
                                         className="my-12 h-0.5 border-t-0 bg-neutral-100 opacity-100 dark:opacity-50"/>
@@ -225,7 +212,7 @@ export default function Edit({ auth, titleData }){
 
 
                                 <button
-                                    disabled={processing}
+                                    disabled={processing || isEnable}
                                     type="submit"
                                     title="Save Data"
                                     onClick={(e) => {  }}

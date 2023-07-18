@@ -1,5 +1,5 @@
 import {Head, Link, useForm}            from "@inertiajs/react";
-import {useEffect, useState} from "react";
+import {useEffect, useState}            from "react";
 import AuthenticatedLayout              from '@/Layouts/AuthenticatedLayout.jsx';
 import {Breadcrumb, Checkbox, Label, Select, TextInput}
                                         from "flowbite-react";
@@ -74,7 +74,7 @@ export default function Add({ auth }){
     const handleOnBlur = (e) => {
 
         e.preventDefault();
-console.log(e.target.value)
+
         /* Checking for a Value */
         if(!FIsEmpty(e.target.value)){
 

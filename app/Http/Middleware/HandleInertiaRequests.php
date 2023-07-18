@@ -52,6 +52,10 @@ class HandleInertiaRequests extends Middleware
             'permissions' => [
                 'permissions' => $permissions
             ],
+            'flash' => [
+                'message'   => fn () => $request->session()->get('message'),
+                'total'     => fn () => $request->session()->get('total')
+            ],
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [
                     'location' => $request->url(),

@@ -15,8 +15,10 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\PermissionsDefaultController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\SuperAdmin\CompanyTitleController;
+use App\Http\Controllers\Auth\SuperAdmin\CulturePerformance\BehaviorsController;
+use App\Http\Controllers\Auth\SuperAdmin\CulturePerformance\ValuesController;
 use App\Http\Controllers\Auth\TimezoneController;
-use App\Http\Controllers\Auth\TitleController;
 use App\Http\Controllers\Auth\UserLevelsController;
 use App\Http\Controllers\Auth\UserPermissionsController;
 use App\Http\Controllers\Auth\UsersController;
@@ -101,11 +103,22 @@ Route::middleware('auth')->group(function () {
     Route::post('timezone',                     [TimezoneController::class,         'getAll']);
 
     // CompanyTitle
-    Route::post('title',                        [TitleController::class,            'getAll']);
-    Route::get('titles-show',                   [TitleController::class,            'show'])->name('titles.show');
-    Route::get('title-update/{uuid}',           [TitleController::class,            'update'])->name('title.update');
-    Route::post('title-save',                   [TitleController::class,            'save'])->name('title.update.data');
-    Route::post('title-available',);
+    //Route::post('title',                        [TitleController::class,            'getAll']);
+    //Route::get('titles-show',                   [TitleController::class,            'show'])->name('titles.show');
+    //Route::get('title-update/{uuid}',           [TitleController::class,            'update'])->name('title.update');
+    //Route::post('title-delete',                 [TitleController::class,            'delete'])->name('title.delete');
+    //Route::post('title-save',                   [TitleController::class,            'save'])->name('title.update.data');
+    //Route::get('title-create',                  [TitleController::class,            'create'])->name('title.create');
+
+
+    Route::get('title',                         [CompanyTitleController::class,     'index'])->name('company.title.index');
+    Route::get('title/create',                  [CompanyTitleController::class,     'create'])->name('company.title.create');
+    Route::post('title',                        [CompanyTitleController::class,     'store'])->name('company.title.store');
+    Route::get('title/{id}/edit',               [CompanyTitleController::class,     'edit'])->name('company.title.edit');
+    Route::put('title/{id}',                    [CompanyTitleController::class,     'update'])->name('company.title.update');
+    Route::post('title/{id}/destroy',           [CompanyTitleController::class,     'destroy'])->name('company.title.destroy');
+    Route::post('title/verify',                 [CompanyTitleController::class,     'verifyTitle'])->name('company.title.verify');
+    Route::post('title/all',                    [CompanyTitleController::class,     'getAllCombo'])->name('company.title.getAll');
 });
 
 /*
@@ -133,4 +146,20 @@ Route::middleware(['auth', 'isSuperAdmin'])->group(function (){
     // Modules
     Route::get('modules-show',              [ModulesController::class,          'show'])->name('modules.show');
     Route::get('module-create',             [ModulesController::class,          'create'])->name('module.create');
+
+
+    // Culture Performance Values
+    Route::get('values',                    [ValuesController::class,           'index'])   ->name('modules.values.index');
+    Route::get('values/create',             [ValuesController::class,           'create'])  ->name('modules.values.create');
+    Route::post('values',                   [ValuesController::class,           'store'])   ->name('modules.values.store');
+
+    // Culture Performance Behaviors
+    Route::get('behaviors',                 [BehaviorsController::class,        'index'])   ->name('modules.behaviors.index');
+    Route::get('behaviors/create',          [BehaviorsController::class,        'create'])  ->name('modules.behaviors.create');
+    Route::post('behaviors',                [BehaviorsController::class,        'store'])   ->name('modules.behaviors.store');
+    Route::get('behaviors/{id}/edit',       [BehaviorsController::class,        'edit'])    ->name('modules.behaviors.edit');
+    Route::put('behaviors/{id}',            [BehaviorsController::class,        'update'])  ->name('modules.behaviors.update');
+    Route::post('behaviors/{uuid}/destroy', [BehaviorsController::class,        'destroy']) ->name('modules.behaviors.destroy');
+
+    Route::post('behaviors/verify',         [BehaviorsController::class,        'verifyBehavior'])->name('modules.behaviors.verify');
 });
