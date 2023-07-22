@@ -21,6 +21,7 @@
     },
     "dependencies": {
         "@ckeditor/ckeditor5-build-classic": "^38.1.1",
+        "@ckeditor/ckeditor5-export-pdf": "^38.1.1",
         "@ckeditor/ckeditor5-react": "^6.1.0",
         "@ckeditor/ckeditor5-word-count": "^38.1.1",
         "@heroicons/react": "^2.0.18",

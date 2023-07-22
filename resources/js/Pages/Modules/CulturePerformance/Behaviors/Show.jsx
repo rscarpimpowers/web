@@ -37,13 +37,22 @@ export default function Show({ auth, dataBehaviors }){
                             icon={HiOutlineListBullet}
                         >
                             <p>
-                                <Link href={route('dashboard')}>Dashboard</Link>
+                                <Link href={route('modules.index')}>Modules</Link>
                             </p>
                         </Breadcrumb.Item>
                         <Breadcrumb.Item>
                             List all Behaviors
                         </Breadcrumb.Item>
                     </Breadcrumb>
+
+                    <div className="col-span-2">
+                        <div className="col-start-1 col-span-3">
+                            <span>test</span>
+                        </div>
+                        <div className="col-start-5 col-end-10">
+                        <span>text</span>
+                        </div>
+                    </div>
 
                     <section className="flex items-center h-32 bg-white dark:bg-gray-900">
                         <div className="w-full px-4 lg:px-12">
@@ -110,7 +119,10 @@ export default function Show({ auth, dataBehaviors }){
                                                             title: 'Edit', route: 'modules.behaviors.edit', uuid: `${item.uuid}`
                                                         }}
                                                         item1={{
-                                                            title: 'Delete', route: 'modules.behaviors.destroy', uuid: `${item.uuid}`
+                                                            title: 'Delete', route: 'modules.behaviors.destroy',
+                                                            uuid: `${item.uuid}`,
+                                                            textHtml: ' Would you like to remove this behavior?',
+                                                            textBtnConfirm: 'Delete?'
                                                         }}
                                                     ></CustomDropDownMenu>
                                                 </div>
@@ -120,31 +132,26 @@ export default function Show({ auth, dataBehaviors }){
                             </ul>
                         </div>
                     </section>
-
-
-
-
-
                 </div>
             </div>
 
 
-            <button
-                type="submit"
-                title="Add Value"
-                onClick={(e) => {  }}
-                className="fixed z-90 bottom-10 right-20 bg-blue-600 w-20 h-20 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-blue-700 hover:drop-shadow-2xl"
-            >
-                <Tooltip content="Click to Add" className="w-28">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
-                         stroke="currentColor" className="w-12 h-12">
-                        <path strokeLinecap="round" strokeLinejoin="round"
-                              d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-
-                </Tooltip>
-            </button>
-
+            <Link href={route('modules.behaviors.create')}>
+                <button
+                    type="submit"
+                    title="Add Value"
+                    onClick={(e) => {  }}
+                    className="fixed z-90 bottom-10 right-20 bg-blue-600 w-20 h-20 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-blue-700 hover:drop-shadow-2xl"
+                >
+                    <Tooltip content="Click to Add" className="w-28">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
+                             stroke="currentColor" className="w-12 h-12">
+                            <path strokeLinecap="round" strokeLinejoin="round"
+                                  d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </Tooltip>
+                </button>
+            </Link>
         </AuthenticatedLayout>
     )
 }

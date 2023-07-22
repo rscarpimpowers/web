@@ -305,9 +305,7 @@ export default function Add({ auth, dataColorGroup }){
                                                                 data=""
                                                                 onReady={ editor => { } }
                                                                 onChange={ ( event, editor ) => {
-                                                                    const data = editor.getData();
                                                                     setData('beh_takeaways', editor.getData())
-                                                                    console.log( { event, editor, data } );
                                                                 } }
                                                                 onBlur={ ( event, editor ) => { } }
                                                                 onFocus={ ( event, editor ) => { } }
@@ -332,7 +330,9 @@ export default function Add({ auth, dataColorGroup }){
                                                                 editor={ ClassicEditor }
                                                                 data=""
                                                                 onReady={ editor                => { } }
-                                                                onChange={ ( event, editor )    => { } }
+                                                                onChange={ ( event, editor )    => {
+                                                                    setData('beh_definition', editor.getData())
+                                                                } }
                                                                 onBlur={ ( event, editor )      => { } }
                                                                 onFocus={ ( event, editor )     => { } }
                                                             />

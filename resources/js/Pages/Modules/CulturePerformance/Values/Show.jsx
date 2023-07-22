@@ -5,7 +5,7 @@ import {Breadcrumb, Tooltip}
                                     from 'flowbite-react';
 
 import {HiOutlineListBullet}        from "react-icons/hi2";
-import CustomDropDownMenu from "@/Components/CustomDropDownMenu.jsx";
+import CustomDropDownMenu           from "@/Components/CustomDropDownMenu.jsx";
 
 
 
@@ -34,7 +34,7 @@ export default function Show({ auth, dataValues }){
                             icon={HiOutlineListBullet}
                         >
                             <p>
-                                <Link href={route('company.title.index')}>Dashboard</Link>
+                                <Link href={route('modules.index')}>Modules</Link>
                             </p>
                         </Breadcrumb.Item>
                         <Breadcrumb.Item>

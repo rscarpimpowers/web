@@ -11,5 +11,5 @@ class Modules extends Model
 
     protected $table = 'modules';
 
-    protected $fillable = ['mod_id', 'uuid', 'mod_name', 'mod_description', 'company_id', 'is_active'];
+    protected $fillable = ['mod_id', 'uuid', 'mod_name', 'mod_description', 'company_id', 'is_active', 'mod_img_path'];
 }

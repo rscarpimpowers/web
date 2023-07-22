@@ -92,7 +92,6 @@ Route::middleware('auth')->group(function () {
 
     // Languages
     Route::post('languages',                    [LanguagesController::class,       'showAll']);
-
     // Levels
     Route::post('levels',                       [UserLevelsController::class,       'showAll']);
 
@@ -144,7 +143,7 @@ Route::middleware(['auth', 'isSuperAdmin'])->group(function (){
 
 
     // Modules
-    Route::get('modules-show',              [ModulesController::class,          'show'])->name('modules.show');
+    Route::get('modules',                   [ModulesController::class,          'show'])->name('modules.index');
     Route::get('module-create',             [ModulesController::class,          'create'])->name('module.create');
 
 

@@ -268,3 +268,12 @@ export const FCustomToast = (pTitle) => {
 }
 
 
+
+export const FCountClicks = (e) => {
+
+    document.addEventListener('click', function (event) {
+        console.log('clicked')
+    }, false);
+}
+
+

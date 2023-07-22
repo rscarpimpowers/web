@@ -40,6 +40,7 @@ class BehaviorsController extends Controller
     public function store(Request $request)
     {
 
+        /* Setting the uuid */
         $uuid = Uuid::uuid4();
 
         /* Checking for a valid Request */
@@ -62,8 +63,8 @@ class BehaviorsController extends Controller
             ]);
         }
 
-
-        return Inertia::render('Modules/CulturePerformance/Behaviors/Show', ['dataBehaviors' => ViewCultureBehaviors::orderBy('beh_name')->orderBy('beh_sequence')->get()]);
+        return Inertia::render('Modules/CulturePerformance/Behaviors/Show',
+            ['dataBehaviors' => ViewCultureBehaviors::orderBy('beh_name')->orderBy('beh_sequence')->get()]);
     }
 
     /**

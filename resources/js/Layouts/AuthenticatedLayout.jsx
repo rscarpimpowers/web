@@ -10,6 +10,7 @@ import PowersLogo                   from "@/../../public/images/powers/powers-br
 import {Avatar, Dropdown}
                                     from "flowbite-react";
 
+
 export default function Authenticated({ user, children }) {
 
     // Destructuring.
@@ -25,9 +26,6 @@ export default function Authenticated({ user, children }) {
                 setCompany(response.data[0])
             }))
     }, [])
-
-
-
 
 
 
@@ -52,6 +50,7 @@ export default function Authenticated({ user, children }) {
     return (
 
         <div className="antialiased bg-gray-50 dark:bg-gray-900">
+
             <nav
                 className="bg-white border-b border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50">
                 <div className="flex flex-wrap justify-between items-center">

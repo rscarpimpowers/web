@@ -30,7 +30,7 @@ export default function Edit({auth, userData, permissions, userPermissions }){
     const [emailDirty, setEmailDirty]       = useState({email: '', dirty: false})
 
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
+    const { data, setData, patch, post, errors, processing, recentlySuccessful } = useForm({
         first_name      : userData[0].first_name,
         last_name       : userData[0].last_name,
         email           : userData[0].email,
