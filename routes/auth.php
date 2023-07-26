@@ -17,12 +17,14 @@ use App\Http\Controllers\Auth\PermissionsDefaultController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\SuperAdmin\CompanyTitleController;
 use App\Http\Controllers\Auth\SuperAdmin\CulturePerformance\BehaviorsController;
+use App\Http\Controllers\Auth\SuperAdmin\CulturePerformance\LessonsController;
 use App\Http\Controllers\Auth\SuperAdmin\CulturePerformance\ValuesController;
 use App\Http\Controllers\Auth\TimezoneController;
 use App\Http\Controllers\Auth\UserLevelsController;
 use App\Http\Controllers\Auth\UserPermissionsController;
 use App\Http\Controllers\Auth\UsersController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\UploadController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('message', 'message');
@@ -125,6 +127,9 @@ Route::middleware('auth')->group(function () {
  */
 Route::middleware(['auth', 'isSuperAdmin'])->group(function (){
 
+    // Images
+    Route::post('upload', [UploadController::class, 'store']);
+
 
     // Users
     Route::get('users-show',                [UsersController::class,            'show'])->name('users.show');
@@ -161,4 +166,12 @@ Route::middleware(['auth', 'isSuperAdmin'])->group(function (){
     Route::post('behaviors/{uuid}/destroy', [BehaviorsController::class,        'destroy']) ->name('modules.behaviors.destroy');
 
     Route::post('behaviors/verify',         [BehaviorsController::class,        'verifyBehavior'])->name('modules.behaviors.verify');
+
+    // Culture Performance Lessons.
+    Route::get('lessons',                   [LessonsController::class,          'index'])   ->name('modules.lessons.index');
+    Route::get('lessons/create',            [LessonsController::class,          'create'])  ->name('modules.lessons.create');
+
+
+
+
 });

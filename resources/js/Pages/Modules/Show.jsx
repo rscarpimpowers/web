@@ -8,8 +8,6 @@ function classNames(...classes) {
 }
 
 export default function Show({ auth, modulesData }){
-
-    const moduleSections = JSON.parse(modulesData[0]['modulesSectionsData']) || [];
     return(
         <AuthenticatedLayout
             user={auth.user}
@@ -30,6 +28,7 @@ export default function Show({ auth, modulesData }){
                             { modulesData.map((module, item) => {
 
                                 const moduleSections = JSON.parse(modulesData[item]['modulesSectionsData']) || [];
+                                console.log(moduleSections)
                                 return(
                                     <div key={module.mod_id}>
 
@@ -72,7 +71,7 @@ export default function Show({ auth, modulesData }){
                                                                         ): (<></>) }
 
                                                                         <div className="flex justify-between gap-x-4 py-3">
-                                                                            <dt className="text-gray-500">Amount</dt>
+                                                                            <dt className="text-gray-500">Total: { section.totalValues }</dt>
                                                                             <dd className="flex items-start gap-x-2">
                                                                                 <div className="font-medium text-gray-900">{""}</div>
                                                                                 <div

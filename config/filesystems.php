@@ -56,6 +56,16 @@ return [
             'throw' => false,
         ],
 
+        'powers' => [
+            'driver'    => 'local',
+            'root'      => public_path() . '/images/powers/',
+        ],
+
+        'values'    => [
+            'driver'    => 'local',
+            'root'      => public_path() . '/images/values',
+        ]
+
     ],
 
     /*

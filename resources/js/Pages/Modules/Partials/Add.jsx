@@ -8,10 +8,6 @@ import {Breadcrumb, Button, Checkbox, Label, Textarea, TextInput, Tooltip}
 import {HiOutlineListBullet}            from "react-icons/hi2";
 import InputError                       from "@/Components/InputError.jsx";
 import {useState}                       from "react";
-import ModuleSection                    from "@/Pages/Modules/Components/ModuleSection.jsx";
-import intus from "intus";
-import {isRequired} from "intus/rules";
-
 
 /**
  * SECTION      : Modules/Partials/Add
@@ -256,7 +252,7 @@ export default function Add({ auth }){
 
 
                                                         <div>
-                                                            {moduleSectionList}
+
                                                         </div>
 
 

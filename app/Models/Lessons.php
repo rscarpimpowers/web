@@ -7,25 +7,25 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Ramsey\Uuid\Uuid;
 
-class ModuleSections extends Model
+class Lessons extends Model
 {
     use HasFactory;
 
-    protected $table    = "module_sections";
+    protected $table    = 'culture_lessons';
 
-    public $timestamps  = true;
-
-    protected $fillable =   [
-        'sec_id',
-        'uuid', '
-        sec_sequence',
-        'mod_id',
-        'sec_name',
-        'sec_description',
-        'is_active',
+    protected $fillable = [
+        'les_id',
+        'uuid',
+        'company_id',
+        'value_id',
+        'behavior_id',
+        'les_title',
+        'les_minutes_to_complete',
+        'difficulty_id',
+        'les_is_visible',
         'created_by',
-        'updated_by'
-    ];
+        'updated_by'];
+
 
     public static function boot()
     {

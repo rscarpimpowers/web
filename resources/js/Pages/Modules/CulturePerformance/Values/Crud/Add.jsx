@@ -1,15 +1,31 @@
 import {Head, Link, useForm, usePage}           from "@inertiajs/react";
-import React, {useEffect, useRef, useState}     from "react";
+import React, {useEffect, useState}             from "react";
+
+
+import { FilePond, registerPlugin }             from "react-filepond";
+import FilePondPluginImageResize                from 'filepond-plugin-image-resize';
+import FilePondPluginImagePreview               from 'filepond-plugin-image-preview';
+import FilePondPluginFileValidateType           from 'filepond-plugin-file-validate-type';
+
+
 
 import AuthenticatedLayout                      from '@/Layouts/AuthenticatedLayout.jsx';
+
+
 import {Breadcrumb, FileInput, Label, TextInput, Tooltip}
                                                 from "flowbite-react";
 import {HiOutlineListBullet}                    from "react-icons/hi2";
 import InputError                               from "@/Components/InputError.jsx";
-import { Combobox }                             from '@headlessui/react'
+import {PhotoIcon}                              from "@heroicons/react/20/solid/index.js";
 
+import 'filepond/dist/filepond.min.css';
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 
-
+registerPlugin(
+    FilePondPluginImageResize,
+    FilePondPluginImagePreview,
+    FilePondPluginFileValidateType
+);
 
 
 /**
@@ -23,7 +39,10 @@ import { Combobox }                             from '@headlessui/react'
 export default function Add({ auth }){
 
     const { flash }                                     = usePage().props;
-    const [selectedPeople, setSelectedPeople]   = useState([people[0], people[1]])
+    const [sectionImg, setSectionImg]         = useState();
+
+
+    //const [selectedPeople, setSelectedPeople]   = useState([people[0], people[1]])
 
     const {
         data,
@@ -68,6 +87,13 @@ export default function Add({ auth }){
      */
     const handleOnBlur = (e) => {
 
+    }
+
+
+
+    const handleImgSelection = (e) => {
+
+        console.log(URL.createObjectURL(e.target.files[0]), e.target.files[0])
     }
 
 
@@ -181,36 +207,34 @@ export default function Add({ auth }){
                                                         </div>
                                                     </div>
 
-                                                    <div className="col-span-full mt-2">
-                                                        <label htmlFor="photo" className="block text-sm font-medium leading-6 text-gray-900">
-                                                            Cover Image
+
+                                                    <div className="col-span-full mt-10 mb-10">
+                                                        <label htmlFor="cover-photo" className="block text-sm font-medium leading-6 text-gray-900">
+                                                            Cover image
                                                         </label>
-                                                        <div className="mt-2 flex items-center gap-x-3">
 
-                                                            <div className="bg-cyan-300">
 
-                                                                <img
-                                                                    src="https://tecdn.b-cdn.net/img/new/standard/city/041.jpg"
-                                                                    className="max-w-sm rounded border bg-white p-1 dark:border-neutral-700 dark:bg-neutral-800"
-                                                                    alt="..."/>
-                                                            </div>
-                                                        </div>
+                                                        <FilePond
+                                                            credits={false}
+                                                            allowMultiple={false}
+                                                            maxFiles={1}
+                                                            acceptedFileTypes={['image/png', 'image/jpeg', 'image/jpg']}
+                                                            server={{
+                                                                url: '/upload',
+                                                                headers: {
+                                                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                                                }
+                                                            }}
+
+                                                            instantUpload={true}
+                                                            name={"imgValues"}
+                                                        ></FilePond>
                                                     </div>
-                                                    <div
-                                                        className="max-w-md mt-2"
-                                                        id="fileUpload"
-                                                    >
-                                                        <div className="mb-2 block">
-                                                            <Label
-                                                                htmlFor="file"
-                                                                value="Upload file"
-                                                            />
-                                                        </div>
-                                                        <FileInput
-                                                            helperText="Select a Image to represent the Value"
-                                                            id="file"
-                                                        />
-                                                    </div>
+
+
+
+
+
 
 
                                                     <div className="mt-8">
@@ -220,26 +244,7 @@ export default function Add({ auth }){
                                                                 value="Technical Value Description"
                                                             />
                                                         </div>
-                                                        <Editor
-                                                            apiKey='x2shcz7m9ta76ifg9wxe41ytgl94900g30igo8cljaqp2crg'
-                                                            onInit={(e, editor) => {}}
-                                                            init={{
-                                                                height: 300,
-                                                                menubar: false,
-                                                                plugins: [
-                                                                    'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                                                                    'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                                                                    'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
-                                                                ],
-                                                                toolbar: 'undo redo | blocks | ' +
-                                                                    'bold italic forecolor | alignleft aligncenter ' +
-                                                                    'alignright alignjustify | bullist numlist outdent indent | ' +
-                                                                    'removeformat | help',
-                                                                content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
 
-                                                            }}
-                                                            value={data.val_technical}
-                                                        ></Editor>
                                                     </div>
 
                                                     <div className="mb-2 block">
@@ -274,23 +279,23 @@ export default function Add({ auth }){
                                             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:col-span-2 lg:gap-8">
                                                 <div className="col-span-2">
 
-                                                    <Combobox value={selectedPeople} onChange={setSelectedPeople} multiple>
-                                                        {selectedPeople.length > 0 && (
-                                                            <ul>
-                                                                {selectedPeople.map((person) => (
-                                                                    <li key={person.id}>{person.name}</li>
-                                                                ))}
-                                                            </ul>
-                                                        )}
-                                                        <Combobox.Input />
-                                                        <Combobox.Options>
-                                                            {people.map((person) => (
-                                                                <Combobox.Option key={person.id} value={person}>
-                                                                    {person.name}
-                                                                </Combobox.Option>
-                                                            ))}
-                                                        </Combobox.Options>
-                                                    </Combobox>
+                                                    {/*<Combobox value={selectedPeople} onChange={setSelectedPeople} multiple>*/}
+                                                    {/*    {selectedPeople.length > 0 && (*/}
+                                                    {/*        <ul>*/}
+                                                    {/*            {selectedPeople.map((person) => (*/}
+                                                    {/*                <li key={person.id}>{person.name}</li>*/}
+                                                    {/*            ))}*/}
+                                                    {/*        </ul>*/}
+                                                    {/*    )}*/}
+                                                    {/*    <Combobox.Input />*/}
+                                                    {/*    <Combobox.Options>*/}
+                                                    {/*        {people.map((person) => (*/}
+                                                    {/*            <Combobox.Option key={person.id} value={person}>*/}
+                                                    {/*                {person.name}*/}
+                                                    {/*            </Combobox.Option>*/}
+                                                    {/*        ))}*/}
+                                                    {/*    </Combobox.Options>*/}
+                                                    {/*</Combobox>*/}
 
                                                 </div>
                                             </div>
